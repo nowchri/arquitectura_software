@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+_pycache_/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Dependencias instaladas (no subas la carpeta site-packages)
+*.egg-info/
+dist/
+build/
+
+# Archivos de configuración local
+*.env
