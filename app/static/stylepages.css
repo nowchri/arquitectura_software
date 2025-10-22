@@ -27,6 +27,228 @@ body {
   padding: 0; /* <--- sin padding */
 }
 
+/* Modal pop-up de perfil de estudiante */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1001;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal.modal--open {
+  display: flex;
+}
+
+.modal-content.perfil-modal-flex {
+  background: white;
+  border-radius: 14px;
+  padding: 36px 32px;
+  max-width: 1500px;
+  display: flex;
+  position: relative;
+  min-width: 750px;
+  box-shadow: 0 5px 32px rgba(0, 0, 0, 0.18);
+  width: 100%;
+}
+
+.perfil-form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+}
+.perfil-left { 
+  flex: 1.45; 
+  min-width: 270px;
+}
+.perfil-right { 
+  flex: 1; 
+  min-width: 190px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  justify-content: flex-start;
+}
+.detail-form__group label {
+  font-size: 15px; 
+  font-weight: 500;
+}
+.detail-form__group input {
+  width: 100%;
+  padding: 8px 13px;
+  margin: 8px 0 17px 0;
+  font-size: 16px;
+  border: 1px solid #e2c7a6;
+  border-radius: 4px;
+  background: #fdfcf8;
+  box-sizing: border-box;
+}
+.perfil-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.btn-primary {
+  background: #e77923 !important;
+  color: white;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 12px;
+  min-width: 150px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(140,55,0,0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+.btn-primary--large {
+  font-size: 20px;
+  padding: 12px 32px;
+}
+.btn-secondary {
+  background: #eee;
+  color: #e77923;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+.btn-secondary--danger {
+  color: #E53E3E;
+  background: #fff0f0;
+  border: 1px solid #E53E3E;
+}
+.detail-card__meta-label {
+  font-size: 15px;
+  font-weight: 500;
+}
+.meta-pill {
+  background: #f9e9d8;
+  color: #94320C;
+  padding: 6px 14px;
+  border-radius: 16px;
+  margin-right: 4px;
+  font-size: 14px;
+}
+.close-modal {
+  position: absolute;
+  top: 18px;
+  right: 23px;
+  font-size: 38px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+/* Responsive - ARREGLADO COMPLETAMENTE */
+@media (max-width: 800px) {
+  .modal {
+    padding: 10px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+  
+  .modal-content.perfil-modal-flex {
+    flex-direction: column;
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
+    padding: 25px 20px;
+    margin: 20px 0;
+  }
+  
+  .perfil-form {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .perfil-left, 
+  .perfil-right {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .perfil-actions {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .perfil-actions button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .detail-form__group input {
+    font-size: 16px; /* Previene zoom en iOS */
+    padding: 10px 12px;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    padding: 12px 20px;
+  }
+  
+  .close-modal {
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  
+  /* Aseguramos que el botón "Volver" del modal también sea full width */
+  #cerrar-modal-btn {
+    width: 100%;
+  }
+}
+
+/* Para pantallas muy pequeñas (móviles pequeños) */
+@media (max-width: 480px) {
+  .modal-content.perfil-modal-flex {
+    padding: 20px 15px;
+  }
+  
+  .perfil-form {
+    gap: 15px;
+  }
+  
+  .detail-form__group input {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 15px;
+    font-size: 15px;
+  }
+}
+
+/* ------------------------------ */
+
 .dashboard-wrapper {
   width: 100%; /* <--- ocupa todo el ancho */
   max-width: 100%; /* evita limitarlo */

@@ -63,7 +63,82 @@
         </main>
     </div>
     
+    <!-- Pop-up modal que muestra el perfil del estudiante seleccionado -->
+    <div id="modal-perfil" class="modal">
+        <div class="modal-content perfil-modal-flex">
+            <form id="perfil-estudiante-form" class="perfil-form">
+                <div class="perfil-left">
+                    <div class="detail-form__group">
+                        <label for="perfil-nombre">Nombre</label>
+                        <input type="text" id="perfil-nombre" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-apellido">Apellido</label>
+                        <input type="text" id="perfil-apellido" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-documento">Documento (CC - TI):</label>
+                        <input type="text" id="perfil-documento" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-telefono">Número de teléfono:</label>
+                        <input type="text" id="perfil-telefono" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-correo">Correo:</label>
+                        <input type="text" id="perfil-correo" disabled>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-primary" id="cerrar-modal-btn">Volver</button>
+                    </div>
+                </div>
+                <div class="perfil-right">
+                    <div class="detail-card__meta">
+                        <span class="detail-card__meta-label">Fecha de inscripción:</span>
+                        <div class="meta-pill-group">
+                            <span class="meta-pill" id="perfil-fecha">Cargando...</span>
+                        </div>
+                    </div>
+                    <div class="perfil-actions">
+                        <button type="button" class="btn-primary">Actualizar Datos</button>
+                        <button type="button" class="btn-secondary btn-secondary--danger" style="margin-top:12px;">Eliminar
+                            Estudiante</button>
+                    </div>
+                </div>
+                <span class="close-modal" id="cerrar-modal">&times;</span>
+            </form>
+        </div>
+    </div>
+
     <script>
+        function attachPerfilHandlers() {
+            // Asignar eventos a botones Ver perfil
+            document.querySelectorAll('.link-action[data-doc]').forEach(el => {
+                el.onclick = function(ev){
+                    ev.preventDefault();
+                    const doc = this.getAttribute("data-doc");
+                    fetch(`/api/estudiantes/perfil/${doc}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("No encontrado");
+                        return res.json()
+                    })
+                    .then(est => {
+                        document.getElementById("perfil-nombre").value = est.nombre;
+                        document.getElementById("perfil-apellido").value = est.apellido;
+                        document.getElementById("perfil-documento").value = est.documento_identidad;
+                        document.getElementById("perfil-telefono").value = est.telefono;
+                        document.getElementById("perfil-correo").value = est.correo_electronico;
+                        const fechaInscripcion = est.fecha_inscripcion ? new Date(est.fecha_inscripcion) : null;
+                        document.getElementById("perfil-fecha").textContent = fechaInscripcion
+                        ? fechaInscripcion.toLocaleDateString("es-CO", { year: 'numeric', month: 'short', day: 'numeric' })
+                        : '';
+                        document.getElementById("modal-perfil").classList.add("modal--open");
+                    })
+                    .catch(()=>alert("No se encontró el estudiante"));
+                };
+            });
+        }
+
         function pintarEstudiantes(estudiantes) {
             const tbody = document.getElementById("students-tbody");
             tbody.innerHTML = "";
@@ -76,11 +151,18 @@
             estudiantes.forEach(e => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
-                    <td>${e.nombre} ${e.apellido} (${e.estado})<br><small>Cédula: ${e.documento_identidad}</small></td>
-                    <td><a href="#" class="link-action">Ver perfil</a></td>
+                <td>${e.nombre} ${e.apellido} (${e.estado})<br><small>Cédula: ${e.documento_identidad}</small></td>
+                <td><a href="#" class="link-action" data-doc="${e.documento_identidad}">Ver perfil</a></td>
                 `;
                 tbody.appendChild(tr);
             });
+            attachPerfilHandlers(); // <-- ESTA LÍNEA ES NUEVA Y CRUCIAL
+        }
+
+        // Modal: cerrar
+        document.getElementById("cerrar-modal").onclick =
+        document.getElementById("cerrar-modal-btn").onclick = function(){
+        document.getElementById("modal-perfil").classList.remove("modal--open");
         }
 
         // Mostrar todos al cargar
