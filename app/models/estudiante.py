@@ -7,6 +7,7 @@ class Estudiante(Base):
     __tablename__ = "estudiante"
 
     id_estudiante = Column(Integer, primary_key=True, autoincrement=True)
+    documento_identidad = Column(String(20), nullable=False, unique=True)
     nombre = Column(String(50), nullable=False)
     apellido = Column(String(50), nullable=False)
     fecha_nacimiento = Column(Date)

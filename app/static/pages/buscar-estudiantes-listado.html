@@ -1,13 +1,12 @@
+<!-- app/static/pages/buscar-estudiantes-listado.html -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Estudiantes - Listado</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
 </head>
 
@@ -53,33 +52,7 @@
                                 <th class="col-action">Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Filas de ejemplo; reemplázalas con datos dinámicos -->
-                            <tr>
-                                <td>Estudiante registrado 1</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                            <tr>
-                                <td>Estudiante registrado 2</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                            <tr>
-                                <td>Estudiante registrado 3</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                            <tr>
-                                <td>Estudiante registrado 4</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                            <tr>
-                                <td>Estudiante registrado 5</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                            <tr>
-                                <td>Estudiante registrado 6</td>
-                                <td><a href="#" class="link-action">Ver perfil</a></td>
-                            </tr>
-                        </tbody>
+                        <tbody id="students-tbody"></tbody>
                     </table>
                 </div>
 
@@ -89,7 +62,43 @@
             </section>
         </main>
     </div>
+    
+    <script>
+        function pintarEstudiantes(estudiantes) {
+            const tbody = document.getElementById("students-tbody");
+            tbody.innerHTML = "";
+            if (estudiantes.length === 0) {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td colspan="2" style="text-align:center;color:#c44;">No se encontraron estudiantes.</td>`;
+                tbody.appendChild(tr);
+                return;
+            }
+            estudiantes.forEach(e => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${e.nombre} ${e.apellido} (${e.estado})<br><small>Cédula: ${e.documento_identidad}</small></td>
+                    <td><a href="#" class="link-action">Ver perfil</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Mostrar todos al cargar
+        fetch("/api/estudiantes/")
+            .then(res => res.json())
+            .then(json => pintarEstudiantes(json));
+
+        // Buscar por cédula
+        document.querySelector(".toolbar").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const doc = document.getElementById("documento").value.trim();
+            let url = "/api/estudiantes/";
+            if (doc) url += `?documento=${encodeURIComponent(doc)}`;
+            fetch(url)
+                .then(res => res.json())
+                .then(json => pintarEstudiantes(json));
+        });
+    </script>
     <script src="scripts/menu-loader.js"></script>
 </body>
-
 </html>
