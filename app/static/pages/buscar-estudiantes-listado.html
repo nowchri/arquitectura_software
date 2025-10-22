@@ -111,12 +111,14 @@
     </div>
 
     <script>
+        let documentoActual = null; // Guardamos el documento del estudiante actual
+
         function attachPerfilHandlers() {
-            // Asignar eventos a botones Ver perfil
             document.querySelectorAll('.link-action[data-doc]').forEach(el => {
                 el.onclick = function(ev){
                     ev.preventDefault();
                     const doc = this.getAttribute("data-doc");
+                    documentoActual = doc; // Guardamos el documento
                     fetch(`/api/estudiantes/perfil/${doc}`)
                     .then(res => {
                         if (!res.ok) throw new Error("No encontrado");
@@ -132,6 +134,14 @@
                         document.getElementById("perfil-fecha").textContent = fechaInscripcion
                         ? fechaInscripcion.toLocaleDateString("es-CO", { year: 'numeric', month: 'short', day: 'numeric' })
                         : '';
+                        
+                        // Habilitar campos para edición (excepto fecha)
+                        document.getElementById("perfil-nombre").disabled = false;
+                        document.getElementById("perfil-apellido").disabled = false;
+                        document.getElementById("perfil-documento").disabled = false;
+                        document.getElementById("perfil-telefono").disabled = false;
+                        document.getElementById("perfil-correo").disabled = false;
+                        
                         document.getElementById("modal-perfil").classList.add("modal--open");
                     })
                     .catch(()=>alert("No se encontró el estudiante"));
@@ -156,13 +166,49 @@
                 `;
                 tbody.appendChild(tr);
             });
-            attachPerfilHandlers(); // <-- ESTA LÍNEA ES NUEVA Y CRUCIAL
+            attachPerfilHandlers();
         }
+
+        // Botón Actualizar Datos
+        document.querySelector(".perfil-actions .btn-primary").onclick = function(e){
+            e.preventDefault();
+            if(!documentoActual){
+                alert("Error: No se identificó el estudiante");
+                return;
+            }
+            
+            const datosActualizados = {
+                nombre: document.getElementById("perfil-nombre").value.trim(),
+                apellido: document.getElementById("perfil-apellido").value.trim(),
+                documento_identidad: document.getElementById("perfil-documento").value.trim(),
+                telefono: document.getElementById("perfil-telefono").value.trim(),
+                correo_electronico: document.getElementById("perfil-correo").value.trim()
+            };
+            
+            fetch(`/api/estudiantes/${documentoActual}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(datosActualizados)
+            })
+            .then(res => {
+                if(!res.ok) return res.json().then(err => {throw new Error(err.detail)});
+                return res.json();
+            })
+            .then(data => {
+                alert("✅ Estudiante actualizado correctamente");
+                document.getElementById("modal-perfil").classList.remove("modal--open");
+                // Recargar lista
+                fetch("/api/estudiantes/")
+                    .then(res => res.json())
+                    .then(json => pintarEstudiantes(json));
+            })
+            .catch(err => alert("❌ Error: " + err.message));
+        };
 
         // Modal: cerrar
         document.getElementById("cerrar-modal").onclick =
         document.getElementById("cerrar-modal-btn").onclick = function(){
-        document.getElementById("modal-perfil").classList.remove("modal--open");
+            document.getElementById("modal-perfil").classList.remove("modal--open");
         }
 
         // Mostrar todos al cargar
@@ -180,7 +226,7 @@
                 .then(res => res.json())
                 .then(json => pintarEstudiantes(json));
         });
-    </script>
+</script>
     <script src="scripts/menu-loader.js"></script>
 </body>
 </html>
