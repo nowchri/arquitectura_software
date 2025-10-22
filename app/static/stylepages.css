@@ -679,14 +679,663 @@ header {
 
 /* Contenedor de las opciones de pago */
 .payment-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Estilo para cada opción de pago (Nequi, Efectivo) */
+.payment-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background-color: var(--panel-bg);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.payment-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Contenedor del icono dentro de la opción de pago */
+.payment-option__icon {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo para la imagen del icono */
+.payment-option__icon img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+/* Etiqueta debajo del icono */
+.payment-option__label {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+/* --- ESTILOS PARA EL POPUP (MODAL) DE NEQUI --- */
+
+/* Overlay del modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Contenido del modal */
+.modal__content {
+  background-color: var(--panel-bg);
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal__content h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Cuerpo del modal (QR e info) */
+.modal__body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.modal__qr {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 0.5rem;
+}
+
+.modal__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1rem;
+}
+
+.modal__info p {
+  margin: 0;
+}
+
+/* Pie del modal (botones) */
+.modal__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Estilos responsivos para el modal */
+@media (max-width: 720px) {
+  .modal__body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal__qr {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+  }
+
+  .modal__footer {
+    flex-direction: column;
+  }
+}
+
+/* --- ESTILOS PARA EL POPUP (MODAL) DE EFECTIVO --- */
+
+/* Estilo para el cuerpo del modal de efectivo (pregunta) */
+.modal__body--question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.modal__body--question p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/*//////gestion de pagos end //////////*/
+/*////////////////////////////////*/
+
+/*////////////////////////////////*/
+/*//////gestion de bastidores end //////////*/
+/* --- ESTILOS PARA LA PÁGINA DE GESTIÓN DE BASTIDORES --- */
+
+/* Contenedor de las opciones de bastidores */
+.bastidores-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Estilo para cada opción de bastidor */
+.bastidor-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background-color: var(--panel-bg);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bastidor-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Contenedor del icono dentro de la opción de bastidor */
+.bastidor-option__icon {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+}
+
+/* Etiqueta debajo del icono */
+.bastidor-option__label {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+/*//////gestion de bastidores end //////////*/
+/*////////////////////////////////*/
+
+/*////////////////////////////////*/
+/*//////gestion de asignar bastidor/////////*/
+/* --- ESTILOS PARA LA PÁGINA DE ASIGNAR BASTIDOR --- */
+
+/* --- ESTILOS PARA LA PÁGINA DE ASIGNAR BASTIDOR --- */
+
+/* Estilo para el encabezado de la tarjeta */
+.detail-card__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.detail-card__header h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Estilo para el formulario de asignación */
+.assign-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Estilo para los grupos de campos */
+.detail-form__group {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Estilo para la fila de campos */
+.field-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Estilo para los campos individuales */
+.field {
+  flex: 1;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+  border: 2px solid rgba(247, 148, 29, 0.5);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.18);
+}
+
+/* Estilo para el botón de búsqueda */
+.field-row button {
+  height: fit-content;
+  margin-top: 1.8rem;
+}
+
+/* Estilo para el menú desplegable */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='%23f7941d' d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+/* Estilo para los botones de acción */
+.detail-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+/*//////gestion de asignar bastidor end/////////*/
+/*////////////////////////////////*/
+
+/*////////////////////////////////*/
+/*//////seleccion de clases /////////*/
+/*////////////////////////////////*/
+/* --- ESTILOS PARA LA PÁGINA DE SELECCIÓN DE CLASES --- */
+
+/* Contenedor de las opciones de clases */
+.clases-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Estilo para cada opción de clase */
+.clase-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background-color: var(--panel-bg);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clase-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Contenedor del icono dentro de la opción de clase */
+.clase-option__icon {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+}
+
+/* Etiqueta debajo del icono */
+.clase-option__label {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* --- ESTILOS PARA EL POPUP (MODAL) DE CREAR CLASE --- */
+
+/* Contenido del modal */
+.modal__content {
+  background-color: var(--panel-bg);
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal__content h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+  background-color: var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Formulario dentro del modal */
+.create-class-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Estilo para los grupos de campos */
+.detail-form__group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.detail-form__group label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.detail-form__group input,
+.detail-form__group select {
+  border: 2px solid rgba(247, 148, 29, 0.5);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-form__group input:focus,
+.detail-form__group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.18);
+}
+
+/* Estilo para la fila de campos */
+.field-row {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Estilo para los campos individuales */
+.field {
+  flex: 1;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+  border: 2px solid rgba(247, 148, 29, 0.5);
+  border-radius: 12px;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.18);
+}
+
+/* Estilo para el menú desplegable */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='%23f7941d' d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+/* Estilo para los botones de acción */
+.detail-form__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+/*////////////////////////////////*/
+/*//////seleccion de clases end/////////*/
+/*////////////////////////////////*/
+/*////////////////////////////////*/
+/*//////asignacion de clases ////////*/
+/*////////////////////////////////*/
+/* --- ESTILOS PARA LA PÁGINA DE ASIGNACIÓN DE CLASES --- */
+
+/* Estilo para el formulario de asignación */
+.assign-class-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Estilo para la fila de campos de clases y precios */
+.field-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+/* Estilo para los campos individuales */
+.field {
+    flex: 1;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.field input,
+.field select {
+    border: 2px solid rgba(247, 148, 29, 0.5);
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.18);
+}
+
+/* Estilo para el menú desplegable */
+.field select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3e%3cpath fill='%23f7941d' d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+/* Estilo para la barra de búsqueda */
+.field-group {
+    display: grid;
+    gap: 1rem;
+}
+
+.field-group .field-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.field-group .field-row button {
+    margin-top: 1.8rem;
+    height: fit-content;
+}
+
+/* Estilo para los botones de acción */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+
+/*////////////////////////////////*/
+/*//////asignacion de clases end////////*/
+/*////////////////////////////////*/
+
+/*////////////////////////////////*/
+/*//////gestion de reportes////////*/
+/*////////////////////////////////*/
+/* --- ESTILOS PARA EL POPUP (MODAL) DE EXPORTAR/IMPRIMIR REPORTE --- */
+
+/* Contenido del modal */
+.modal__content {
+    background-color: var(--panel-bg);
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal__content h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Opciones de exportación */
+.export-options {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+/* Estilo para cada opción de exportación */
+.export-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
+    background-color: var(--panel-bg);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.export-option:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Contenedor del icono dentro de la opción de exportación */
+.export-option__icon {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+}
+
+/* Etiqueta debajo del icono */
+.export-option__label {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+}
+/*////////////////////////////////*/
+/*//////gestion de reportes end////////*/
+/*////////////////////////////////*/
+
+/*////////////////////////////////*/
+/*//////configuracion////////*/
+/*////////////////////////////////*/
+/* --- ESTILOS PARA LA PÁGINA DE CONFIGURACIÓN --- */
+
+/* Contenedor de las opciones de configuración */
+.config-options {
     display: flex;
     justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
 }
 
-/* Estilo para cada opción de pago (Nequi, Efectivo) */
-.payment-option {
+/* Estilo para cada opción de configuración */
+.config-option {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -702,33 +1351,107 @@ header {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.payment-option:hover {
+.config-option:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Contenedor del icono dentro de la opción de pago */
-.payment-option__icon {
+/* Contenedor del icono dentro de la opción de configuración */
+.config-option__icon {
     width: 100%;
     height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Estilo para la imagen del icono */
-.payment-option__icon img {
-    max-width: 80%;
-    max-height: 80%;
-    object-fit: contain;
+    color: var(--text-dark);
 }
 
 /* Etiqueta debajo del icono */
-.payment-option__label {
+.config-option__label {
     margin-top: 1rem;
     font-size: 1rem;
     font-weight: 600;
     text-align: center;
 }
-/*//////gestion de pagos end //////////*/
+
+/* --- ESTILOS PARA EL POPUP (MODAL) DE CAMBIO DE CONTRASEÑA --- */
+
+/* Contenido del modal */
+.modal__content {
+    background-color: var(--panel-bg);
+    border-radius: 18px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal__content h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Formulario dentro del modal */
+.change-password-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Estilo para los grupos de campos */
+.detail-form__group {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.detail-form__group label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.detail-form__group input {
+    border: 2px solid rgba(247, 148, 29, 0.5);
+    border-radius: 12px;
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-form__group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(247, 148, 29, 0.18);
+}
+
+/* Estilo para los botones de acción */
+.detail-form__actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* --- ESTILOS PARA EL POPUP (MODAL) DE GESTIONAR USUARIOS --- */
+
+/* Estilo para el cuerpo del modal de gestión de usuarios */
+.modal__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.modal__body p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.4;
+    margin: 0;
+}
+/*////////////////////////////////*/
+/*//////configuracion end////////*/
 /*////////////////////////////////*/

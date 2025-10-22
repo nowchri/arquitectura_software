@@ -1,59 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Registro de Estudiantes - Perfil</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
 </head>
-
 <body>
     <div class="dashboard-wrapper">
-        <aside>
-            <figure class="sidebar__brand">
-                <div class="sidebar__logo">
-                    <img src="../imgs/logo_main.jpg" alt="Logo Academia Trazos & Latices">
-                </div>
-            </figure>
-
-            <nav aria-label="Menú principal">
-                <a href="registro-estudiantes.html" class="menu-item menu-item--active">
-                    <span class="menu-icon"><i class="fa-solid fa-graduation-cap"></i></span>
-                    <span>Registro de Estudiantes</span>
-                </a>
-                <a href="gestion-pagos.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-cash-register"></i></span>
-                    <span>Gestión de Pagos</span>
-                </a>
-                <a href="gestion-bastidores.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-regular fa-image"></i></span>
-                    <span>Gestión de Bastidores</span>
-                </a>
-                <a href="seleccion-clases.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
-                    <span>Selección de Clases</span>
-                </a>
-                <a href="gestion-reportes.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-clipboard-list"></i></span>
-                    <span>Gestión de Reportes</span>
-                </a>
-                <a href="configuracion.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-gear"></i></span>
-                    <span>Configuración</span>
-                </a>
-            </nav>
-
-            <div class="sidebar__footer">
-                <button type="button" class="logout-btn" onclick="window.location.href='../index.html'">
-                    <span class="menu-icon"><i class="fa-solid fa-right-from-bracket" onclick="window.location.href='../index.html'"></i></span>
-                    <span>Cerrar sesión</span>
-                </button>
-            </div>
-        </aside>
+       <script src="scripts/menu-loader.js"></script>
 
         <main>
             <header class="header header--with-line">
@@ -74,8 +31,8 @@
                         <div class="detail-card__meta">
                             <span class="detail-card__meta-label">Fecha de inscripción:</span>
                             <div class="meta-pill-group">
-                                <span class="meta-pill">Jun 10, 2024</span>
-                                <span class="meta-pill">9:41 AM</span>
+                                <span class="meta-pill" id="fecha-inscripcion">Cargando...</span>
+                                <span class="meta-pill" id="hora-inscripcion">Cargando...</span>
                             </div>
                         </div>
                     </div>
@@ -103,9 +60,9 @@
                         </div>
 
                         <div class="detail-form__actions">
-                            <button type="button" class="btn-primary">Actualizar Datos</button>
-                            <button type="button" class="btn-secondary btn-secondary--danger">Eliminar
-                                Estudiante</button>
+                            <!-- ✅ Cambiado a enlace que redirige a gestión de pagos -->
+                            <a href="gestion-pagos.html" class="btn-primary">Registrar Estudiante</a>
+                            <button type="button" class="btn-secondary btn-secondary--danger">Eliminar Estudiante</button>
                         </div>
                     </form>
 
@@ -116,6 +73,17 @@
             </section>
         </main>
     </div>
-</body>
 
+    <script>
+        // ✅ Generar fecha y hora dinámicas al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const fecha = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+            const hora = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('fecha-inscripcion').textContent = fecha;
+            document.getElementById('hora-inscripcion').textContent = hora;
+        });
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+</body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Bastidores - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-placeholder"></div>
+        <main>
+            <header>
+                <h1>Gestión de Bastidores</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <!-- Opciones de gestión de bastidores -->
+                <div class="bastidores-options">
+                    <a href="bastidores-asignados.html" class="bastidor-option">
+                        <div class="bastidor-option__icon">
+                            <i class="fa-solid fa-database fa-6x"></i>
+                        </div>
+                        <div class="bastidor-option__label">Bastidores asignados</div>
+                    </a>
+                    <a href="bastidor-asignar.html" class="bastidor-option">
+                        <div class="bastidor-option__icon">
+                            <i class="fa-solid fa-hand-pointer fa-6x"></i>
+                        </div>
+                        <div class="bastidor-option__label">Asignar Bastidor</div>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>

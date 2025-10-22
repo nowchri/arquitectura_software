@@ -13,47 +13,7 @@
 
 <body>
     <div class="dashboard-wrapper">
-        <aside>
-            <figure class="sidebar__brand">
-                <div class="sidebar__logo">
-                    <a href="Dashboard_ini.html">
-                        <img src="../imgs/logo_main.jpg" alt="Logo Academia Trazos & Latices">
-                    </a>
-                </div>
-            </figure>
-            <nav aria-label="Menú principal">
-                <a href="registro-estudiantes.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-graduation-cap"></i></span>
-                    <span>Registro de Estudiantes</span>
-                </a>
-                <a href="gestion-pagos.html" class="menu-item menu-item--active">
-                    <span class="menu-icon"><i class="fa-solid fa-cash-register"></i></span>
-                    <span>Gestión de Pagos</span>
-                </a>
-                <a href="gestion-bastidores.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-regular fa-image"></i></span>
-                    <span>Gestión de Bastidores</span>
-                </a>
-                <a href="seleccion-clases.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
-                    <span>Selección de Clases</span>
-                </a>
-                <a href="gestion-reportes.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-clipboard-list"></i></span>
-                    <span>Gestión de Reportes</span>
-                </a>
-                <a href="configuracion.html" class="menu-item">
-                    <span class="menu-icon"><i class="fa-solid fa-gear"></i></span>
-                    <span>Configuración</span>
-                </a>
-            </nav>
-            <div class="sidebar__footer">
-                <button type="button" class="logout-btn" onclick="window.location.href='../index.html'">
-                    <span class="menu-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
-                    <span>Cerrar sesión</span>
-                </button>
-            </div>
-        </aside>
+        <div id="sidebar-placeholder"></div>
         <main>
             <header>
                 <h1>Gestión de Pagos</h1>
@@ -67,20 +27,16 @@
             </header>
             <!-- Contenido principal -->
             <section class="content content--listado">
-                <!-- Barra de pestañas -->
-                <div class="tab-bar">
-                    <div class="tab tab--active">Pago Registro Estudiante</div>
-                </div>
-
+                
                 <!-- Opciones de pago -->
                 <div class="payment-options">
-                    <a href="#" class="payment-option">
+                    <a href="#" class="payment-option" id="nequi-trigger">
                         <div class="payment-option__icon">
                             <img src="../imgs/nequi.png" alt="Logo Nequi">
                         </div>
                         <div class="payment-option__label">Nequi</div>
                     </a>
-                    <a href="#" class="payment-option">
+                    <a href="#" class="payment-option" id="efectivo-trigger">
                         <div class="payment-option__icon">
                             <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
                         </div>
@@ -95,6 +51,173 @@
             </section>
         </main>
     </div>
-</body>
+    <!-- Popup (Modal) para Nequi -->
+    <div class="modal" id="nequi-modal">
+        <div class="modal__content">
+            <h2>Nuestros datos:</h2>
+            <div class="modal__body">
+                <img src="../imgs/qr.jpg" alt="Código QR Nequi" class="modal__qr">
+                <div class="modal__info">
+                    <p><strong style="color: var(--accent);">Número de teléfono:</strong><br>30135552547</p>
+                    <p><strong style="color: var(--accent);">Nombre propietario:</strong><br>Enriqueta Marcerla</p>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-nequi-btn">Cancelar</button>
+                <button type="button" class="btn-primary" id="next-nequi-btn">Siguiente</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Popup (Modal) para Efectivo -->
+    <div class="modal" id="efectivo-modal">
+        <div class="modal__content">
+            <h2>Pago En Efectivo:</h2>
+            <div class="modal__body modal__body--question">
+                <p>¿El pago está registrado en la caja?</p>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-efectivo-btn">Cancelar</button>
+                <button type="button" class="btn-primary" id="next-efectivo-btn">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Popup (Modal) para Nequi -->
+    <div class="modal" id="nequi-modal">
+        <div class="modal__content">
+            <h2>Nuestros datos:</h2>
+            <div class="modal__body">
+                <img src="../imgs/nequi-qr.png" alt="Código QR Nequi" class="modal__qr">
+                <div class="modal__info">
+                    <p><strong style="color: var(--accent);">Número de teléfono:</strong><br>30135552547</p>
+                    <p><strong style="color: var(--accent);">Nombre propietario:</strong><br>Enriqueta Marcerla</p>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-nequi-btn">Cancelar</button>
+                <!-- Al hacer clic en "Siguiente", se abre el popup de confirmación -->
+                <button type="button" class="btn-primary" id="next-nequi-btn">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup (Modal) para Efectivo -->
+    <div class="modal" id="efectivo-modal">
+        <div class="modal__content">
+            <h2>Pago En Efectivo:</h2>
+            <div class="modal__body modal__body--question">
+                <p>¿El pago está registrado en la caja?</p>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-efectivo-btn">Cancelar</button>
+                <!-- Al hacer clic en "Siguiente", se abre el popup de confirmación -->
+                <button type="button" class="btn-primary" id="next-efectivo-btn">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup (Modal) de Confirmación Final -->
+    <!-- Este es el nuevo popup que muestra el nombre del estudiante -->
+    <div class="modal" id="confirmacion-modal">
+        <div class="modal__content">
+            <h2>Pago por el Registro del Estudiante:</h2>
+            <!-- 
+                COMENTARIO: Aquí va el nombre del estudiante.
+                En un entorno real, este valor no sería estático.
+                Debería ser reemplazado por una variable o un elemento dinámico que traiga el dato desde la base de datos.
+                Por ejemplo, si usas JavaScript, podrías tener algo como:
+                document.getElementById('student-name').textContent = nombreDelEstudiante;
+            -->
+            <div class="modal__body modal__body--confirmation">
+                <p id="student-name">Fuan Felipe Filimeno Foo</p>
+            </div>
+            <div class="modal__footer">
+                <!-- 
+                    COMENTARIO: El botón "Finalizar" debería ejecutar una acción en el backend,
+                    como registrar el pago en la base de datos y redirigir al usuario a otra página.
+                -->
+                <a href="../pages/registro-estudiantes-perfil.html">
+                    <button type="button" class="btn-primary" id="finalize-btn">Finalizar</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para manejar los popups
+        const nequiTrigger = document.getElementById('nequi-trigger');
+        const efectivoTrigger = document.getElementById('efectivo-trigger');
+        const nequiModal = document.getElementById('nequi-modal');
+        const efectivoModal = document.getElementById('efectivo-modal');
+        const confirmacionModal = document.getElementById('confirmacion-modal'); // Nuevo modal
+        const cancelNequiBtn = document.getElementById('cancel-nequi-btn');
+        const nextNequiBtn = document.getElementById('next-nequi-btn');
+        const cancelEfectivoBtn = document.getElementById('cancel-efectivo-btn');
+        const nextEfectivoBtn = document.getElementById('next-efectivo-btn');
+        const finalizeBtn = document.getElementById('finalize-btn'); // Botón de finalización
+
+        // Mostrar el modal de Nequi al hacer clic
+        nequiTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            nequiModal.style.display = 'flex';
+        });
+
+        // Mostrar el modal de Efectivo al hacer clic
+        efectivoTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            efectivoModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal de Nequi
+        cancelNequiBtn.addEventListener('click', function() {
+            nequiModal.style.display = 'none';
+        });
+
+        // Abrir el modal de confirmación al hacer clic en "Siguiente" de Nequi
+        nextNequiBtn.addEventListener('click', function() {
+            nequiModal.style.display = 'none';
+            confirmacionModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal de Efectivo
+        cancelEfectivoBtn.addEventListener('click', function() {
+            efectivoModal.style.display = 'none';
+        });
+
+        // Abrir el modal de confirmación al hacer clic en "Siguiente" de Efectivo
+        nextEfectivoBtn.addEventListener('click', function() {
+            efectivoModal.style.display = 'none';
+            confirmacionModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal de confirmación
+        finalizeBtn.addEventListener('click', function() {
+            confirmacionModal.style.display = 'none';
+            // Aquí puedes agregar lógica adicional, como redirigir a otra página o mostrar un mensaje de éxito
+            alert("¡Pago registrado con éxito!");
+        });
+
+        // Cerrar los modales si se hace clic fuera del contenido
+        nequiModal.addEventListener('click', function(e) {
+            if (e.target === nequiModal) {
+                nequiModal.style.display = 'none';
+            }
+        });
+
+        efectivoModal.addEventListener('click', function(e) {
+            if (e.target === efectivoModal) {
+                efectivoModal.style.display = 'none';
+            }
+        });
+
+        confirmacionModal.addEventListener('click', function(e) {
+            if (e.target === confirmacionModal) {
+                confirmacionModal.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+</body>
 </html>

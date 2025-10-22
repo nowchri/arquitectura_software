@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Reportes - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-placeholder"></div>
+        <main>
+            <header>
+                <h1>Gestión de Reportes</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <form class="report-form">
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="tipo-reporte">Selección tipo de reportes:</label>
+                            <!-- 
+                                COMENTARIO: Este menú desplegable debe contener los tipos de reportes disponibles en la base de datos.
+                                Cada opción debe tener un valor (por ejemplo, el ID del reporte) y mostrar el nombre del reporte.
+                                Por ejemplo, en JavaScript:
+                                const select = document.getElementById('tipo-reporte');
+                                reportes.forEach(reporte => {
+                                    const option = document.createElement('option');
+                                    option.value = reporte.id;
+                                    option.textContent = reporte.nombre;
+                                    select.appendChild(option);
+                                });
+                            -->
+                            <select id="tipo-reporte" name="tipo-reporte">
+                                <option value="" disabled selected>Seleccione un reporte</option>
+                                <option value="1">Reporte Estudiantes en clases registradas</option>
+                                <option value="2">Reporte Estudiantes en Mora con las Clases</option>
+                                <option value="3">Reporte de Bastidores Asignados</option>
+                                <option value="4">Reporte de Estudiantes ausentes</option>
+                            </select>
+                        </div>
+                        <div class="field" style="align-self: flex-end;">
+                            <button type="button" class="btn-primary">Aplicar filtro</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-form__group">
+                        <label for="reporte-seleccionado">Reporte seleccionado:</label>
+                        <!-- 
+                            COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un reporte.
+                            Debe mostrar el nombre del reporte seleccionado.
+                            Por ejemplo, en JavaScript:
+                            document.getElementById('reporte-seleccionado').value = nombreDelReporteSeleccionado;
+                        -->
+                        <input type="text" id="reporte-seleccionado" name="reporte-seleccionado"
+                            placeholder="Reporte seleccionado" readonly>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn-primary" id="next-report-btn">Siguiente</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Popup (Modal) para Exportar/Imprimir Reporte -->
+    <div class="modal" id="export-modal">
+        <div class="modal__content">
+            <h2>Exportar o Imprimir Reporte</h2>
+            <div class="export-options">
+                <a href="#" class="export-option" id="print-btn">
+                    <div class="export-option__icon">
+                        <i class="fa-solid fa-print fa-3x"></i>
+                    </div>
+                    <div class="export-option__label">Imprimir</div>
+                </a>
+                <a href="#" class="export-option" id="excel-pdf-btn">
+                    <div class="export-option__icon">
+                        <i class="fa-solid fa-file-pdf fa-3x"></i>
+                    </div>
+                    <div class="export-option__label">Exportar Excel / PDF</div>
+                </a>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-export-btn">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para manejar el popup
+        const nextReportBtn = document.getElementById('next-report-btn');
+        const exportModal = document.getElementById('export-modal');
+        const cancelExportBtn = document.getElementById('cancel-export-btn');
+        const printBtn = document.getElementById('print-btn');
+        const excelPdfBtn = document.getElementById('excel-pdf-btn');
+
+        // Mostrar el modal al hacer clic en "Siguiente"
+        nextReportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            exportModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal al hacer clic en "Volver"
+        cancelExportBtn.addEventListener('click', function () {
+            exportModal.style.display = 'none';
+        });
+
+        // Acción para "Imprimir" (puedes cambiar esta acción)
+        printBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert("¡Función de impresión no implementada!");
+            exportModal.style.display = 'none';
+        });
+
+        // Acción para "Exportar Excel / PDF" (puedes cambiar esta acción)
+        excelPdfBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert("¡Función de exportación no implementada!");
+            exportModal.style.display = 'none';
+        });
+
+        // Cerrar el modal si se hace clic fuera del contenido
+        exportModal.addEventListener('click', function (e) {
+            if (e.target === exportModal) {
+                exportModal.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>

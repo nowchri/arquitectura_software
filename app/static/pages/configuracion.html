@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Configuración - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <div id="sidebar-placeholder"></div>
+        <main>
+            <header>
+                <h1>Configuración</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <!-- Opciones de configuración -->
+                <div class="config-options">
+                    <a href="#" class="config-option" id="change-password-trigger">
+                        <div class="config-option__icon">
+                            <i class="fa-solid fa-gears fa-3x"></i>
+                        </div>
+                        <div class="config-option__label">Cambiar Contraseña</div>
+                    </a>
+                    <a href="#" class="config-option" id="manage-users-trigger">
+                        <div class="config-option__icon">
+                            <i class="fa-solid fa-users fa-3x"></i>
+                        </div>
+                        <div class="config-option__label">Gestionar Usuarios</div>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Popup (Modal) para Cambiar Contraseña -->
+    <div class="modal" id="change-password-modal">
+        <div class="modal__content">
+            <h2>Cambio de contraseña</h2>
+            <form class="change-password-form">
+                <div class="detail-form__group">
+                    <label for="old-password">Contraseña Antigua:</label>
+                    <input type="password" id="old-password" name="old-password" placeholder="************">
+                </div>
+                <div class="detail-form__group">
+                    <label for="new-password">Contraseña Nueva:</label>
+                    <input type="password" id="new-password" name="new-password" placeholder="************">
+                </div>
+                <div class="detail-form__group">
+                    <label for="confirm-password">Confirma Contraseña Nueva:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="************">
+                </div>
+                <div class="detail-form__actions">
+                    <button type="button" class="btn-primary" id="confirm-change-btn">Confirmar</button>
+                    <button type="button" class="btn-secondary" id="cancel-change-btn">Volver</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popup (Modal) para Gestionar Usuarios (En Desarrollo) -->
+    <div class="modal" id="manage-users-modal">
+        <div class="modal__content">
+            <h2>Gestionar Usuarios</h2>
+            <div class="modal__body">
+                <p>Estamos desarrollando esta funcionalidad en estos momentos. ¡Te avisaremos cuando esté terminada!</p>
+                <br>
+                <img src="../imgs/monkey.jpg" alt="" style="max-width: 50%; height: auto;">
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="close-users-btn">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para manejar los popups
+        const changePasswordTrigger = document.getElementById('change-password-trigger');
+        const manageUsersTrigger = document.getElementById('manage-users-trigger');
+        const changePasswordModal = document.getElementById('change-password-modal');
+        const manageUsersModal = document.getElementById('manage-users-modal');
+        const confirmChangeBtn = document.getElementById('confirm-change-btn');
+        const cancelChangeBtn = document.getElementById('cancel-change-btn');
+        const closeUsersBtn = document.getElementById('close-users-btn');
+
+        // Mostrar el modal de cambiar contraseña al hacer clic
+        changePasswordTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            changePasswordModal.style.display = 'flex';
+        });
+
+        // Mostrar el modal de gestionar usuarios al hacer clic
+        manageUsersTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            manageUsersModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal de cambiar contraseña
+        cancelChangeBtn.addEventListener('click', function() {
+            changePasswordModal.style.display = 'none';
+        });
+
+        // Cerrar el modal de gestionar usuarios
+        closeUsersBtn.addEventListener('click', function() {
+            manageUsersModal.style.display = 'none';
+        });
+
+        // Cerrar los modales si se hace clic fuera del contenido
+        changePasswordModal.addEventListener('click', function(e) {
+            if (e.target === changePasswordModal) {
+                changePasswordModal.style.display = 'none';
+            }
+        });
+
+        manageUsersModal.addEventListener('click', function(e) {
+            if (e.target === manageUsersModal) {
+                manageUsersModal.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+</body>
+</html>

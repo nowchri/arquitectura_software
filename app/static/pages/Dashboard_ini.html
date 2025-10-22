@@ -14,63 +14,7 @@
 
 <body>
     <div class="dashboard-wrapper">
-        <aside>
-            <figure class="sidebar__brand">
-                <div class="sidebar__logo">
-                    <!-- Sustituye por tu logotipo -->
-                    <img src="../imgs/logo_main.jpg" alt="">
-
-                </div>
-            </figure>
-
-            <nav aria-label="Menú principal">
-                <a href="registro-estudiantes.html" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </span>
-                    <span>Registro de Estudiantes</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-cash-register"></i>
-                    </span>
-                    <span>Gestión de Pagos</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-regular fa-image"></i>
-                    </span>
-                    <span>Gestión de Bastidores</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-address-book"></i>
-                    </span>
-                    <span>Selección de Clases</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-clipboard-list"></i>
-                    </span>
-                    <span>Gestión de Reportes</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-gear"></i>
-                    </span>
-                    <span>Configuración</span>
-                </a>
-            </nav>
-
-            <div class="sidebar__footer">
-                <button type="button" class="logout-btn">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </span>
-                    <span>Cerrar sesión</span>
-                </button>
-            </div>
-        </aside>
+        <div id="sidebar-placeholder"></div>
 
         <main>
             <header>
@@ -89,10 +33,13 @@
 
             <section class="content" aria-label="Accesos rápidos">
                 <article class="card">
+
                     <div class="card__icon">
-                        <i class="fa-solid fa-user-graduate"></i>
+                        <i class="fa-solid fa-user-graduate fa-0.1x"></i>
                     </div>
-                    <div class="card__label">Ver Estudiantes Registrados</div>
+                    <a href="buscar-estudiantes-listado.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Ver Estudiantes Registrados</div>
+                    </a>
                 </article>
 
                 <article class="card">
@@ -106,18 +53,23 @@
                     <div class="card__icon">
                         <i class="fa-regular fa-image"></i>
                     </div>
-                    <div class="card__label">Bastidores asignados</div>
+                    <a href="bastidores-asignados.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Bastidores asignados</div>
+                    </a>
                 </article>
 
                 <article class="card">
                     <div class="card__icon">
                         <i class="fa-solid fa-school"></i>
                     </div>
-                    <div class="card__label">Clases habilitadas</div>
+                    <a href="bastidores-asignados.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Asignar    Clase</div>
+                    </a>
                 </article>
             </section>
         </main>
     </div>
+    <script src="scripts/menu-loader.js"></script>
 </body>
 
 </html>
