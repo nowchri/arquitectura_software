@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Estudiantes - Listado</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <aside>
+            
+            <figure class="sidebar__brand">
+                <div class="sidebar__logo">
+                    <img src="../imgs/logo_main.jpg" alt="Logo Academia Trazos & Latices">
+                </div>
+            </figure>
+
+            <nav aria-label="Menú principal">
+                <a href="registro-estudiantes.html" class="menu-item menu-item--active">
+                    <span class="menu-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <span>Registro de Estudiantes</span>
+                </a>
+                <a href="gestion-pagos.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-cash-register"></i></span>
+                    <span>Gestión de Pagos</span>
+                </a>
+                <a href="gestion-bastidores.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-regular fa-image"></i></span>
+                    <span>Gestión de Bastidores</span>
+                </a>
+                <a href="seleccion-clases.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
+                    <span>Selección de Clases</span>
+                </a>
+                <a href="gestion-reportes.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+                    <span>Gestión de Reportes</span>
+                </a>
+                <a href="configuracion.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-gear"></i></span>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar__footer">
+                <button type="button" class="logout-btn" onclick="window.location.href='../index.html'">
+                    <span class="menu-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <main>
+            <header class="header header--with-line">
+                <h1>Registro de Estudiantes</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!-- <img src="../imgs/gerente.jpg" alt="Perfil Gerente"> -->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content content--listado" aria-label="Listado de estudiantes registrados">
+                <div class="tab-bar" role="tablist">
+                    <button class="tab tab--active" type="button" aria-selected="true">
+                        Ver Estudiantes Registrados
+                    </button>
+                    <button class="tab" type="button" aria-selected="false" onclick="location.href='registro-estudiantes-perfil.html'">
+                        Registrar Estudiante
+                    </button>
+                </div>
+
+                <form class="toolbar" role="search">
+                    <div class="field">
+                        <label for="documento">Documento:</label>
+                        <input type="text" id="documento" name="documento" placeholder="Ingresa número de documento">
+                    </div>
+                    <button type="submit" class="btn-primary">Buscar</button>
+                </form>
+
+                <div class="table-wrapper">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Estudiante</th>
+                                <th class="col-action">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filas de ejemplo; reemplázalas con datos dinámicos -->
+                            <tr>
+                                <td>Estudiante registrado 1</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estudiante registrado 2</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estudiante registrado 3</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estudiante registrado 4</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estudiante registrado 5</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                            <tr>
+                                <td>Estudiante registrado 6</td>
+                                <td><a href="#" class="link-action">Ver perfil</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="actions">
+                    <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

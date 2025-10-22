@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Pagos - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <aside>
+            <figure class="sidebar__brand">
+                <div class="sidebar__logo">
+                    <a href="Dashboard_ini.html">
+                        <img src="../imgs/logo_main.jpg" alt="Logo Academia Trazos & Latices">
+                    </a>
+                </div>
+            </figure>
+            <nav aria-label="Menú principal">
+                <a href="registro-estudiantes.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <span>Registro de Estudiantes</span>
+                </a>
+                <a href="gestion-pagos.html" class="menu-item menu-item--active">
+                    <span class="menu-icon"><i class="fa-solid fa-cash-register"></i></span>
+                    <span>Gestión de Pagos</span>
+                </a>
+                <a href="gestion-bastidores.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-regular fa-image"></i></span>
+                    <span>Gestión de Bastidores</span>
+                </a>
+                <a href="seleccion-clases.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-address-book"></i></span>
+                    <span>Selección de Clases</span>
+                </a>
+                <a href="gestion-reportes.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+                    <span>Gestión de Reportes</span>
+                </a>
+                <a href="configuracion.html" class="menu-item">
+                    <span class="menu-icon"><i class="fa-solid fa-gear"></i></span>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+            <div class="sidebar__footer">
+                <button type="button" class="logout-btn" onclick="window.location.href='../index.html'">
+                    <span class="menu-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </aside>
+        <main>
+            <header>
+                <h1>Gestión de Pagos</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <!-- Barra de pestañas -->
+                <div class="tab-bar">
+                    <div class="tab tab--active">Pago Registro Estudiante</div>
+                </div>
+
+                <!-- Opciones de pago -->
+                <div class="payment-options">
+                    <a href="#" class="payment-option">
+                        <div class="payment-option__icon">
+                            <img src="../imgs/nequi.png" alt="Logo Nequi">
+                        </div>
+                        <div class="payment-option__label">Nequi</div>
+                    </a>
+                    <a href="#" class="payment-option">
+                        <div class="payment-option__icon">
+                            <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
+                        </div>
+                        <div class="payment-option__label">Efectivo</div>
+                    </a>
+                </div>
+
+                <!-- Botón Volver -->
+                <div class="actions">
+                    <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
