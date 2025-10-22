@@ -7,7 +7,7 @@ from app.database import Base, engine
 # Importa los modelos para que SQLAlchemy los reconozca
 from app.models import Estudiante, Clase, Pago, Asistencia, RedencionDeClaseNoAsistida
 
-from app.api import estudiantes, clases, pagos, asistencias, redenciones, reportes
+from app.api import estudiantes, clases, pagos, asistencias, redenciones, reportes, login
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -22,6 +22,7 @@ def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 # Incluir rutas
+app.include_router(login.router, prefix="/api")
 app.include_router(estudiantes.router, prefix="/api")
 app.include_router(clases.router, prefix="/api")
 app.include_router(pagos.router, prefix="/api")

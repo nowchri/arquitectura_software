@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-EwX3VbfTdkuTO7zd9cZq0YyJH9u4UYpJkk2oF6cLUpz6TUhxJztDUrVkieaiFTrNpjyxDctUqX1aWe4PxQYbog=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
                 <div class="brand">
                     <div class="brand-logo">
                         <!-- Sustituye el contenido por tu logotipo -->
-                        <img src="imgs/logo_main.jpg" alt="Logo Academia" />
+                        <img src="/static/imgs/logo_main.jpg" alt="Logo Academia" />
                     </div>
                     <div class="panel-header">
                         <h1>Inicio de Sesión</h1>
@@ -44,10 +44,10 @@
                     <button type="submit" class="submit-btn">Iniciar Sesión</button>
 
 
-                    <a href="pages/Dashboard_ini.html">
+                    <a href="/static/pages/Dashboard_ini.html">
                         <button type="button" class="inicio-btn"> INICIO </button>
                     </a>
-
+                    <div id="login-error" style="color:red"></div>
                 </form>
 
                 <footer>
@@ -71,6 +71,31 @@
             </aside>
         </section>
     </main>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const errorDiv = document.getElementById("login-error");
+
+            errorDiv.textContent = "";
+            const resp = await fetch("/api/login-admin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (resp.ok) {
+                const data = await resp.json();
+                window.location.href = "/static/pages/Dashboard_ini.html";
+            } else {
+                const err = await resp.json();
+                errorDiv.textContent = err.detail || "Error de login";
+            }
+        });
+    </script>
+
 </body>
 
 </html>
