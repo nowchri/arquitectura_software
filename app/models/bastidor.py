@@ -13,3 +13,15 @@ class Bastidor(Base):
     # Relación inversa (opcional)
     estudiantes = relationship("EstudianteBastidor", back_populates="bastidor")
     pagos = relationship("Pago", back_populates="bastidor")
+
+# app/schemas/bastidor.py
+
+from pydantic import BaseModel
+
+class BastidorOut(BaseModel):
+    id_bastidor: int
+    medidas: str
+    precio: float
+
+    class Config:
+        from_attributes = True

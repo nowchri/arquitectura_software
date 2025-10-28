@@ -24,6 +24,7 @@
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -50,7 +51,7 @@
                                 <th>ID Bastidor</th>
                                 <th>Medidas</th>
                                 <th>Precio</th>
-                                <th>Asignado</th>
+
                                 <th class="col-action">Acción</th>
                             </tr>
                         </thead>
@@ -79,57 +80,50 @@
         </div>
     </div>
     <script>
-        async function cargarBastidores() {
+        async function cargarAsignaciones() {
             try {
-                const res = await fetch('http://127.0.0.1:8000/api/bastidores/');
+                const res = await fetch('http://127.0.0.1:8000/api/estudiante-bastidor/');
                 if (!res.ok) throw new Error(`Error ${res.status}`);
                 const data = await res.json();
                 renderizarTabla(data);
             } catch (err) {
                 console.error(err);
-                alert('Error al cargar los bastidores.');
+                alert('Error al cargar las asignaciones.');
             }
         }
 
-        async function buscarBastidor(id) {
-            if (!id) return cargarBastidores();
+        async function buscarAsignacion(id_bastidor) {
+            if (!id_bastidor) return cargarAsignaciones();
             try {
-                const res = await fetch(`http://127.0.0.1:8000/api/bastidores/${id}`);
-                if (!res.ok) {
-                    if (res.status === 404) {
-                        alert('Bastidor no encontrado.');
-                        document.getElementById('bastidores-table-body').innerHTML = '';
-                    } else {
-                        throw new Error(`Error ${res.status}`);
-                    }
-                    return;
-                }
-                const bastidor = await res.json();
-                renderizarTabla([bastidor]);
+                const res = await fetch('http://127.0.0.1:8000/api/estudiante-bastidor/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const data = await res.json();
+                const asignacionesFiltradas = data.filter(a => a.id_bastidor == id_bastidor);
+                renderizarTabla(asignacionesFiltradas);
             } catch (err) {
                 console.error(err);
-                alert('Error al buscar el bastidor.');
+                alert('Error al buscar la asignación.');
             }
         }
 
-        function renderizarTabla(bastidores) {
+        function renderizarTabla(asignaciones) {
             const tbody = document.getElementById('bastidores-table-body');
             tbody.innerHTML = '';
-            bastidores.forEach(b => {
-                const asignado = b.estudiante_asignado ? 'Sí' : 'No';
+            asignaciones.forEach(a => {
+                const nombreEstudiante = a.estudiante ? `${a.estudiante.nombre} ${a.estudiante.apellido}` : 'Sin estudiante';
+                const medidas = a.bastidor ? a.bastidor.medidas : 'N/A';
+                const precio = a.bastidor ? `$${a.bastidor.precio.toLocaleString()}` : 'N/A';
                 const row = `<tr>
-                    <td>${b.id_bastidor}</td>
-                    <td>${b.medidas}</td>
-                    <td>$${b.precio.toLocaleString()}</td>
-                    <td>${asignado}</td>
-                    <td class="col-action">
-                        <a href="#" class="link-action" 
-                           data-id="${b.id_bastidor}" 
-                           data-estudiante="${b.estudiante_asignado || ''}">
-                            Ver asignación
-                        </a>
-                    </td>
-                </tr>`;
+                <td>${a.id_bastidor}</td>
+                <td>${medidas}</td>
+                <td>${precio}</td>
+                
+                <td class="col-action">
+                    <a href="#" class="link-action" data-id="${a.id_registro_eb}">
+                        Ver asignación
+                    </a>
+                </td>
+            </tr>`;
                 tbody.innerHTML += row;
             });
 
@@ -137,11 +131,12 @@
             document.querySelectorAll('.link-action').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const estudiante = link.getAttribute('data-estudiante');
-                    const info = estudiante
-                        ? `Estudiante asignado: ${estudiante}`
+                    const idRegistro = link.getAttribute('data-id');
+                    const asignacion = asignaciones.find(a => a.id_registro_eb == idRegistro);
+                    const nombreEstudiante = asignacion.estudiante
+                        ? `${asignacion.estudiante.nombre} ${asignacion.estudiante.apellido}`
                         : 'Sin estudiante asignado';
-                    document.getElementById('asignacion-info').textContent = info;
+                    document.getElementById('asignacion-info').textContent = `Estudiante asignado: ${nombreEstudiante}`;
                     document.getElementById('ver-asignacion-modal').style.display = 'flex';
                 });
             });
@@ -149,15 +144,13 @@
 
         // Evento al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
-            cargarBastidores();
+            cargarAsignaciones();
 
-            // Evento del botón Buscar
             document.getElementById('buscar-btn').addEventListener('click', () => {
                 const id = document.getElementById('buscar-bastidor').value.trim();
-                buscarBastidor(id);
+                buscarAsignacion(id);
             });
 
-            // Cerrar modal
             document.getElementById('close-asignacion-btn').addEventListener('click', () => {
                 document.getElementById('ver-asignacion-modal').style.display = 'none';
             });

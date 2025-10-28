@@ -1,7 +1,7 @@
 # app/models/estudiante_bastidor.py
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base
+from app.database import Base # o app.database según tu estructura
 
 class EstudianteBastidor(Base):
     __tablename__ = "estudiante_bastidor"
@@ -10,5 +10,6 @@ class EstudianteBastidor(Base):
     id_estudiante = Column(Integer, ForeignKey("estudiante.id_estudiante"), nullable=False)
     id_bastidor = Column(Integer, ForeignKey("bastidor.id_bastidor"), nullable=False)
 
+    # Relaciones inversas
     estudiante = relationship("Estudiante", back_populates="bastidores")
     bastidor = relationship("Bastidor", back_populates="estudiantes")

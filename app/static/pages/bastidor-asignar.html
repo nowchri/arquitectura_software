@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Bastidores - Asignar Bastidor</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
 </head>
+
 <body>
     <div class="dashboard-wrapper">
         <div id="sidebar-placeholder"></div>
@@ -17,7 +21,7 @@
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
-                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -33,7 +37,8 @@
                         <div class="detail-form__group">
                             <label for="identificacion">Identificación estudiante:</label>
                             <div class="field-row">
-                                <input type="text" id="identificacion" name="identificacion" placeholder="Ingrese la identificación del estudiante">
+                                <input type="text" id="identificacion" name="identificacion"
+                                    placeholder="Ingrese la identificación del estudiante">
                                 <button type="button" class="btn-primary">Buscar</button>
                             </div>
                         </div>
@@ -46,7 +51,8 @@
                                         COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
                                         Debe mostrarse el nombre del estudiante encontrado en la base de datos.
                                     -->
-                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre del estudiante" readonly>
+                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre del estudiante"
+                                        readonly>
                                 </div>
                                 <div class="field">
                                     <label for="apellido">Apellido</label>
@@ -54,7 +60,8 @@
                                         COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
                                         Debe mostrarse el apellido del estudiante encontrado en la base de datos.
                                     -->
-                                    <input type="text" id="apellido" name="apellido" placeholder="Apellido del estudiante" readonly>
+                                    <input type="text" id="apellido" name="apellido"
+                                        placeholder="Apellido del estudiante" readonly>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +82,7 @@
                                         <option value="4">Tamaño B 12K</option>
                                     </select>
                                 </div>
-                                
+
                             </div>
                         </div>
 
@@ -84,13 +91,15 @@
                                 COMENTARIO: El botón "Siguiente" debe redirigir a la página de gestión de pagos.
                             -->
                             <a href="gestion-pagos.html" class="btn-primary">Siguiente</a>
-                            <a href="gestion-bastidores.html" class="btn-secondary" style="text-decoration: none;">Volver</a>
+                            <a href="gestion-bastidores.html" class="btn-secondary"
+                                style="text-decoration: none;">Volver</a>
                         </div>
                     </form>
                 </article>
             </section>
         </main>
     </div>
-   <script src="scripts/menu-loader.js"></script>
+    <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>

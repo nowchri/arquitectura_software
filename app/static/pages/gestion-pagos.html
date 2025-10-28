@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
 </head>
 
 <body>
@@ -20,6 +21,7 @@
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
                         <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
@@ -27,7 +29,7 @@
             </header>
             <!-- Contenido principal -->
             <section class="content content--listado">
-                
+
                 <!-- Opciones de pago -->
                 <div class="payment-options">
                     <a href="#" class="payment-option" id="nequi-trigger">
@@ -159,60 +161,60 @@
         const finalizeBtn = document.getElementById('finalize-btn'); // Botón de finalización
 
         // Mostrar el modal de Nequi al hacer clic
-        nequiTrigger.addEventListener('click', function(e) {
+        nequiTrigger.addEventListener('click', function (e) {
             e.preventDefault();
             nequiModal.style.display = 'flex';
         });
 
         // Mostrar el modal de Efectivo al hacer clic
-        efectivoTrigger.addEventListener('click', function(e) {
+        efectivoTrigger.addEventListener('click', function (e) {
             e.preventDefault();
             efectivoModal.style.display = 'flex';
         });
 
         // Cerrar el modal de Nequi
-        cancelNequiBtn.addEventListener('click', function() {
+        cancelNequiBtn.addEventListener('click', function () {
             nequiModal.style.display = 'none';
         });
 
         // Abrir el modal de confirmación al hacer clic en "Siguiente" de Nequi
-        nextNequiBtn.addEventListener('click', function() {
+        nextNequiBtn.addEventListener('click', function () {
             nequiModal.style.display = 'none';
             confirmacionModal.style.display = 'flex';
         });
 
         // Cerrar el modal de Efectivo
-        cancelEfectivoBtn.addEventListener('click', function() {
+        cancelEfectivoBtn.addEventListener('click', function () {
             efectivoModal.style.display = 'none';
         });
 
         // Abrir el modal de confirmación al hacer clic en "Siguiente" de Efectivo
-        nextEfectivoBtn.addEventListener('click', function() {
+        nextEfectivoBtn.addEventListener('click', function () {
             efectivoModal.style.display = 'none';
             confirmacionModal.style.display = 'flex';
         });
 
         // Cerrar el modal de confirmación
-        finalizeBtn.addEventListener('click', function() {
+        finalizeBtn.addEventListener('click', function () {
             confirmacionModal.style.display = 'none';
             // Aquí puedes agregar lógica adicional, como redirigir a otra página o mostrar un mensaje de éxito
             alert("¡Pago registrado con éxito!");
         });
 
         // Cerrar los modales si se hace clic fuera del contenido
-        nequiModal.addEventListener('click', function(e) {
+        nequiModal.addEventListener('click', function (e) {
             if (e.target === nequiModal) {
                 nequiModal.style.display = 'none';
             }
         });
 
-        efectivoModal.addEventListener('click', function(e) {
+        efectivoModal.addEventListener('click', function (e) {
             if (e.target === efectivoModal) {
                 efectivoModal.style.display = 'none';
             }
         });
 
-        confirmacionModal.addEventListener('click', function(e) {
+        confirmacionModal.addEventListener('click', function (e) {
             if (e.target === confirmacionModal) {
                 confirmacionModal.style.display = 'none';
             }
@@ -220,4 +222,5 @@
     </script>
     <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>

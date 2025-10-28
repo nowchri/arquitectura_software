@@ -1,4 +1,5 @@
 # app/api/bastidores.py
+from email.mime import text
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -46,3 +47,27 @@ def eliminar_bastidor(id_bastidor: int, db: Session = Depends(get_db)):
     db.delete(bastidor)
     db.commit()
     return {"mensaje": "Bastidor eliminado correctamente"}
+
+# GET: Obtener bastidor por ID
+@router.get("/{id_bastidor}")
+def obtener_bastidor(id_bastidor: int, db: Session = Depends(get_db)):
+    bastidor = db.query(Bastidor).filter(Bastidor.id_bastidor == id_bastidor).first()
+    if not bastidor:
+        raise HTTPException(status_code=404, detail="Bastidor no encontrado")
+    return bastidor
+
+# NUEVO ENDPOINT: Obtener asignación de un bastidor por ID
+@router.get("/{id_bastidor}/asignacion")
+def obtener_asignacion_bastidor(id_bastidor: int, db: Session = Depends(get_db)):
+    query = text("""
+        SELECT 
+            CONCAT(e.nombre, ' ', e.apellido) AS nombre_estudiante
+        FROM estudiante_bastidor eb
+        JOIN estudiante e ON eb.id_estudiante = e.id_estudiante
+        WHERE eb.id_bastidor = :id_bastidor
+    """)
+    result = db.execute(query, {"id_bastidor": id_bastidor}).mappings().first()
+    if not result:
+        return {"estudiante_asignado": None}
+    return {"estudiante_asignado": result["nombre_estudiante"]}
+

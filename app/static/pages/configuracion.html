@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuración - Academia Trazos & Latices</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
 </head>
+
 <body>
     <div class="dashboard-wrapper">
-        
+
         <div id="sidebar-placeholder"></div>
         <main>
             <header>
@@ -19,6 +23,7 @@
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
                         <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -95,35 +100,35 @@
         const closeUsersBtn = document.getElementById('close-users-btn');
 
         // Mostrar el modal de cambiar contraseña al hacer clic
-        changePasswordTrigger.addEventListener('click', function(e) {
+        changePasswordTrigger.addEventListener('click', function (e) {
             e.preventDefault();
             changePasswordModal.style.display = 'flex';
         });
 
         // Mostrar el modal de gestionar usuarios al hacer clic
-        manageUsersTrigger.addEventListener('click', function(e) {
+        manageUsersTrigger.addEventListener('click', function (e) {
             e.preventDefault();
             manageUsersModal.style.display = 'flex';
         });
 
         // Cerrar el modal de cambiar contraseña
-        cancelChangeBtn.addEventListener('click', function() {
+        cancelChangeBtn.addEventListener('click', function () {
             changePasswordModal.style.display = 'none';
         });
 
         // Cerrar el modal de gestionar usuarios
-        closeUsersBtn.addEventListener('click', function() {
+        closeUsersBtn.addEventListener('click', function () {
             manageUsersModal.style.display = 'none';
         });
 
         // Cerrar los modales si se hace clic fuera del contenido
-        changePasswordModal.addEventListener('click', function(e) {
+        changePasswordModal.addEventListener('click', function (e) {
             if (e.target === changePasswordModal) {
                 changePasswordModal.style.display = 'none';
             }
         });
 
-        manageUsersModal.addEventListener('click', function(e) {
+        manageUsersModal.addEventListener('click', function (e) {
             if (e.target === manageUsersModal) {
                 manageUsersModal.style.display = 'none';
             }
@@ -131,4 +136,5 @@
     </script>
     <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>
