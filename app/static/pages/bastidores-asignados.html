@@ -10,7 +10,15 @@
 </head>
 <body>
     <div class="dashboard-wrapper">
+<<<<<<< Updated upstream
         <div id="sidebar-placeholder"></div>
+=======
+        <!-- Menú lateral -->
+        <aside id="sidebar-placeholder">
+            <!-- El menú se cargará dinámicamente aquí -->
+        </aside>
+
+>>>>>>> Stashed changes
         <main>
             <header>
                 <h1>Bastidores Asignados</h1>
@@ -22,7 +30,11 @@
                     </div>
                 </div>
             </header>
+<<<<<<< Updated upstream
             <!-- Contenido principal -->
+=======
+
+>>>>>>> Stashed changes
             <section class="content content--listado">
                 <!-- Barra de pestañas -->
                 <div class="tab-bar">
@@ -32,14 +44,23 @@
                 <!-- Barra de búsqueda -->
                 <div class="toolbar">
                     <div class="field">
+<<<<<<< Updated upstream
                         <label for="numero-bastidor">Número de bastidor:</label>
                         <input type="text" id="numero-bastidor" name="numero-bastidor" placeholder="Ingrese el número del bastidor">
+=======
+                        <label for="buscar-bastidor">Buscar por ID bastidor:</label>
+                        <input type="text" id="buscar-bastidor" name="buscar-bastidor" placeholder="Ingrese el ID del bastidor">
+>>>>>>> Stashed changes
                     </div>
                     <button type="button" class="btn-primary">Buscar</button>
                 </div>
 
+<<<<<<< Updated upstream
                 <!-- Tabla de bastidores asignados -->
                 <div class="table-wrapper">
+=======
+                <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+>>>>>>> Stashed changes
                     <table class="students-table">
                         <thead>
                             <tr>
@@ -93,6 +114,112 @@
         </main>
         
     </div>
+<<<<<<< Updated upstream
+=======
+
+    <!-- Modal para "Ver asignación" -->
+    <div class="modal" id="ver-asignacion-modal" style="display: none;">
+        <div class="modal__content" style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+            <h2>Asignación del Bastidor</h2>
+            <p id="asignacion-info" style="margin: 1.5rem 0; font-size: 1.1rem;">Cargando...</p>
+            <div style="text-align: right;">
+                <button type="button" class="btn-secondary" id="close-asignacion-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function cargarBastidores() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/bastidores/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const data = await res.json();
+                renderizarTabla(data);
+            } catch (err) {
+                console.error(err);
+                alert('Error al cargar los bastidores.');
+            }
+        }
+
+        async function buscarBastidor(id) {
+            if (!id) return cargarBastidores();
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/bastidores/${id}`);
+                if (!res.ok) {
+                    if (res.status === 404) {
+                        alert('Bastidor no encontrado.');
+                        document.getElementById('bastidores-table-body').innerHTML = '';
+                    } else {
+                        throw new Error(`Error ${res.status}`);
+                    }
+                    return;
+                }
+                const bastidor = await res.json();
+                renderizarTabla([bastidor]);
+            } catch (err) {
+                console.error(err);
+                alert('Error al buscar el bastidor.');
+            }
+        }
+
+        function renderizarTabla(bastidores) {
+            const tbody = document.getElementById('bastidores-table-body');
+            tbody.innerHTML = '';
+            bastidores.forEach(b => {
+                const asignado = b.estudiante_asignado ? 'Sí' : 'No';
+                const row = `<tr>
+                    <td>${b.id_bastidor}</td>
+                    <td>${b.medidas}</td>
+                    <td>$${b.precio.toLocaleString()}</td>
+                    <td>${asignado}</td>
+                    <td class="col-action">
+                        <a href="#" class="link-action" 
+                           data-id="${b.id_bastidor}" 
+                           data-estudiante="${b.estudiante_asignado || ''}">
+                            Ver asignación
+                        </a>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            // Reasignar eventos a los enlaces
+            document.querySelectorAll('.link-action').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const estudiante = link.getAttribute('data-estudiante');
+                    const info = estudiante 
+                        ? `Estudiante asignado: ${estudiante}` 
+                        : 'Sin estudiante asignado';
+                    document.getElementById('asignacion-info').textContent = info;
+                    document.getElementById('ver-asignacion-modal').style.display = 'flex';
+                });
+            });
+        }
+
+        // Evento al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarBastidores();
+
+            // Evento del botón Buscar
+            document.getElementById('buscar-btn').addEventListener('click', () => {
+                const id = document.getElementById('buscar-bastidor').value.trim();
+                buscarBastidor(id);
+            });
+
+            // Cerrar modal
+            document.getElementById('close-asignacion-btn').addEventListener('click', () => {
+                document.getElementById('ver-asignacion-modal').style.display = 'none';
+            });
+
+            document.getElementById('ver-asignacion-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'ver-asignacion-modal') {
+                    e.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+>>>>>>> Stashed changes
     <script src="scripts/menu-loader.js"></script>
 </body>
 </html>

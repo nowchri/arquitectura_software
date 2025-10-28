@@ -1,12 +1,13 @@
-<!-- app/static/pages/buscar-estudiantes-listado.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Estudiantes - Listado</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
 </head>
 
@@ -20,7 +21,6 @@
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
-                        <!-- <img src="../imgs/gerente.jpg" alt="Perfil Gerente"> -->
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -31,7 +31,8 @@
                     <button class="tab tab--active" type="button" aria-selected="true">
                         Ver Estudiantes Registrados
                     </button>
-                    <button class="tab" type="button" aria-selected="false" onclick="location.href='registro-estudiantes-perfil.html'">
+                    <button class="tab" type="button" aria-selected="false"
+                        onclick="location.href='registro-estudiantes-perfil.html'">
                         Registrar Estudiante
                     </button>
                 </div>
@@ -44,7 +45,8 @@
                     <button type="submit" class="btn-primary">Buscar</button>
                 </form>
 
-                <div class="table-wrapper">
+                <!-- Contenedor con scroll fijo -->
+                <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
                     <table class="students-table">
                         <thead>
                             <tr>
@@ -62,7 +64,7 @@
             </section>
         </main>
     </div>
-    
+
     <!-- Pop-up modal que muestra el perfil del estudiante seleccionado -->
     <div id="modal-perfil" class="modal">
         <div class="modal-content perfil-modal-flex">
@@ -101,7 +103,8 @@
                     </div>
                     <div class="perfil-actions">
                         <button type="button" class="btn-primary">Actualizar Datos</button>
-                        <button type="button" class="btn-secondary btn-secondary--danger" style="margin-top:12px;">Eliminar
+                        <button type="button" class="btn-secondary btn-secondary--danger"
+                            style="margin-top:12px;">Eliminar
                             Estudiante</button>
                     </div>
                 </div>
@@ -111,40 +114,39 @@
     </div>
 
     <script>
-        let documentoActual = null; // Guardamos el documento del estudiante actual
+        let documentoActual = null;
 
         function attachPerfilHandlers() {
             document.querySelectorAll('.link-action[data-doc]').forEach(el => {
-                el.onclick = function(ev){
+                el.onclick = function (ev) {
                     ev.preventDefault();
                     const doc = this.getAttribute("data-doc");
-                    documentoActual = doc; // Guardamos el documento
+                    documentoActual = doc;
                     fetch(`/api/estudiantes/perfil/${doc}`)
-                    .then(res => {
-                        if (!res.ok) throw new Error("No encontrado");
-                        return res.json()
-                    })
-                    .then(est => {
-                        document.getElementById("perfil-nombre").value = est.nombre;
-                        document.getElementById("perfil-apellido").value = est.apellido;
-                        document.getElementById("perfil-documento").value = est.documento_identidad;
-                        document.getElementById("perfil-telefono").value = est.telefono;
-                        document.getElementById("perfil-correo").value = est.correo_electronico;
-                        const fechaInscripcion = est.fecha_inscripcion ? new Date(est.fecha_inscripcion) : null;
-                        document.getElementById("perfil-fecha").textContent = fechaInscripcion
-                        ? fechaInscripcion.toLocaleDateString("es-CO", { year: 'numeric', month: 'short', day: 'numeric' })
-                        : '';
-                        
-                        // Habilitar campos para edición (excepto fecha)
-                        document.getElementById("perfil-nombre").disabled = false;
-                        document.getElementById("perfil-apellido").disabled = false;
-                        document.getElementById("perfil-documento").disabled = false;
-                        document.getElementById("perfil-telefono").disabled = false;
-                        document.getElementById("perfil-correo").disabled = false;
-                        
-                        document.getElementById("modal-perfil").classList.add("modal--open");
-                    })
-                    .catch(()=>alert("No se encontró el estudiante"));
+                        .then(res => {
+                            if (!res.ok) throw new Error("No encontrado");
+                            return res.json()
+                        })
+                        .then(est => {
+                            document.getElementById("perfil-nombre").value = est.nombre;
+                            document.getElementById("perfil-apellido").value = est.apellido;
+                            document.getElementById("perfil-documento").value = est.documento_identidad;
+                            document.getElementById("perfil-telefono").value = est.telefono;
+                            document.getElementById("perfil-correo").value = est.correo_electronico;
+                            const fechaInscripcion = est.fecha_inscripcion ? new Date(est.fecha_inscripcion) : null;
+                            document.getElementById("perfil-fecha").textContent = fechaInscripcion
+                                ? fechaInscripcion.toLocaleDateString("es-CO", { year: 'numeric', month: 'short', day: 'numeric' })
+                                : '';
+
+                            document.getElementById("perfil-nombre").disabled = false;
+                            document.getElementById("perfil-apellido").disabled = false;
+                            document.getElementById("perfil-documento").disabled = false;
+                            document.getElementById("perfil-telefono").disabled = false;
+                            document.getElementById("perfil-correo").disabled = false;
+
+                            document.getElementById("modal-perfil").classList.add("modal--open");
+                        })
+                        .catch(() => alert("No se encontró el estudiante"));
                 };
             });
         }
@@ -169,14 +171,13 @@
             attachPerfilHandlers();
         }
 
-        // Botón Actualizar Datos
-        document.querySelector(".perfil-actions .btn-primary").onclick = function(e){
+        document.querySelector(".perfil-actions .btn-primary").onclick = function (e) {
             e.preventDefault();
-            if(!documentoActual){
+            if (!documentoActual) {
                 alert("Error: No se identificó el estudiante");
                 return;
             }
-            
+
             const datosActualizados = {
                 nombre: document.getElementById("perfil-nombre").value.trim(),
                 apellido: document.getElementById("perfil-apellido").value.trim(),
@@ -184,39 +185,35 @@
                 telefono: document.getElementById("perfil-telefono").value.trim(),
                 correo_electronico: document.getElementById("perfil-correo").value.trim()
             };
-            
+
             fetch(`/api/estudiantes/${documentoActual}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datosActualizados)
             })
-            .then(res => {
-                if(!res.ok) return res.json().then(err => {throw new Error(err.detail)});
-                return res.json();
-            })
-            .then(data => {
-                alert("✅ Estudiante actualizado correctamente");
-                document.getElementById("modal-perfil").classList.remove("modal--open");
-                // Recargar lista
-                fetch("/api/estudiantes/")
-                    .then(res => res.json())
-                    .then(json => pintarEstudiantes(json));
-            })
-            .catch(err => alert("❌ Error: " + err.message));
+                .then(res => {
+                    if (!res.ok) return res.json().then(err => { throw new Error(err.detail) });
+                    return res.json();
+                })
+                .then(data => {
+                    alert("✅ Estudiante actualizado correctamente");
+                    document.getElementById("modal-perfil").classList.remove("modal--open");
+                    fetch("/api/estudiantes/")
+                        .then(res => res.json())
+                        .then(json => pintarEstudiantes(json));
+                })
+                .catch(err => alert("❌ Error: " + err.message));
         };
 
-        // Modal: cerrar
         document.getElementById("cerrar-modal").onclick =
-        document.getElementById("cerrar-modal-btn").onclick = function(){
-            document.getElementById("modal-perfil").classList.remove("modal--open");
-        }
+            document.getElementById("cerrar-modal-btn").onclick = function () {
+                document.getElementById("modal-perfil").classList.remove("modal--open");
+            }
 
-        // Mostrar todos al cargar
         fetch("/api/estudiantes/")
             .then(res => res.json())
             .then(json => pintarEstudiantes(json));
 
-        // Buscar por cédula
         document.querySelector(".toolbar").addEventListener("submit", function (e) {
             e.preventDefault();
             const doc = document.getElementById("documento").value.trim();
@@ -226,7 +223,10 @@
                 .then(res => res.json())
                 .then(json => pintarEstudiantes(json));
         });
-</script>
+    </script>
+
+    <!-- Cargar menú desde scripts/menu-loader.js -->
     <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>

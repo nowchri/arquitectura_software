@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro de Estudiantes - Perfil</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
 </head>
+
 <body>
     <div class="dashboard-wrapper">
-       <script src="scripts/menu-loader.js"></script>
+        <!-- Contenedor del menú lateral (debe estar vacío, el script lo llenará) -->
+        <aside id="sidebar-placeholder"></aside>
 
         <main>
             <header class="header header--with-line">
@@ -18,7 +22,6 @@
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
-                        <!-- <img src="../imgs/gerente.jpg" alt="Perfil Gerente"> -->
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
@@ -60,9 +63,9 @@
                         </div>
 
                         <div class="detail-form__actions">
-                            <!-- ✅ Cambiado a enlace que redirige a gestión de pagos -->
                             <a href="gestion-pagos.html" class="btn-primary">Registrar Estudiante</a>
-                            <button type="button" class="btn-secondary btn-secondary--danger">Eliminar Estudiante</button>
+                            <button type="button" class="btn-secondary btn-secondary--danger">Eliminar
+                                Estudiante</button>
                         </div>
                     </form>
 
@@ -75,7 +78,6 @@
     </div>
 
     <script>
-        // ✅ Generar fecha y hora dinámicas al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
             const fecha = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -84,6 +86,9 @@
             document.getElementById('hora-inscripcion').textContent = hora;
         });
     </script>
+
+    <!-- Cargar el menú desde scripts/menu-loader.js -->
     <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>
