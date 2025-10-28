@@ -45,4 +45,4 @@ def eliminar_bastidor(id_bastidor: int, db: Session = Depends(get_db)):
 
     db.delete(bastidor)
     db.commit()
-    return {"mensaje": "Bastidor eliminado correctamente"}git
+    return {"mensaje": "Bastidor eliminado correctamente"}

@@ -1,125 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bastidores Asignados - Academia Trazos & Latices</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
 </head>
+
 <body>
     <div class="dashboard-wrapper">
-<<<<<<< Updated upstream
-        <div id="sidebar-placeholder"></div>
-=======
         <!-- Menú lateral -->
         <aside id="sidebar-placeholder">
             <!-- El menú se cargará dinámicamente aquí -->
         </aside>
 
->>>>>>> Stashed changes
         <main>
             <header>
                 <h1>Bastidores Asignados</h1>
                 <div class="profile">
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
-                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
             </header>
-<<<<<<< Updated upstream
-            <!-- Contenido principal -->
-=======
 
->>>>>>> Stashed changes
             <section class="content content--listado">
-                <!-- Barra de pestañas -->
                 <div class="tab-bar">
                     <div class="tab tab--active">Ver Bastidores Asignados</div>
                 </div>
 
-                <!-- Barra de búsqueda -->
                 <div class="toolbar">
                     <div class="field">
-<<<<<<< Updated upstream
-                        <label for="numero-bastidor">Número de bastidor:</label>
-                        <input type="text" id="numero-bastidor" name="numero-bastidor" placeholder="Ingrese el número del bastidor">
-=======
                         <label for="buscar-bastidor">Buscar por ID bastidor:</label>
-                        <input type="text" id="buscar-bastidor" name="buscar-bastidor" placeholder="Ingrese el ID del bastidor">
->>>>>>> Stashed changes
+                        <input type="text" id="buscar-bastidor" name="buscar-bastidor"
+                            placeholder="Ingrese el ID del bastidor">
                     </div>
-                    <button type="button" class="btn-primary">Buscar</button>
+                    <button type="button" class="btn-primary" id="buscar-btn">Buscar</button>
                 </div>
 
-<<<<<<< Updated upstream
-                <!-- Tabla de bastidores asignados -->
-                <div class="table-wrapper">
-=======
                 <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
->>>>>>> Stashed changes
                     <table class="students-table">
                         <thead>
                             <tr>
-                                <th>Bastidor</th>
+                                <th>ID Bastidor</th>
+                                <th>Medidas</th>
+                                <th>Precio</th>
+                                <th>Asignado</th>
                                 <th class="col-action">Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- 
-                                COMENTARIO: Aquí se deben generar las filas de la tabla dinámicamente.
-                                Cada fila representa un bastidor asignado y debe contener:
-                                - El nombre o número del bastidor (por ejemplo, "Bastidor 1").
-                                - Un enlace "Ver asignación" que permita ver los detalles de la asignación.
-                                Este contenido debe ser generado por un script o servidor que consulte la base de datos.
-                                Por ejemplo, en JavaScript:
-                                const tableBody = document.querySelector('.students-table tbody');
-                                bastidores.forEach(bastidor => {
-                                    const row = document.createElement('tr');
-                                    row.innerHTML = `
-                                        <td>${bastidor.nombre}</td>
-                                        <td class="col-action"><a href="#" class="link-action">Ver asignación</a></td>
-                                    `;
-                                    tableBody.appendChild(row);
-                                });
-                            -->
-                            <tr>
-                                <td>Bastidor 1</td>
-                                <td class="col-action"><a href="#" class="link-action">Ver asignación</a></td>
-                            </tr>
-                            <tr>
-                                <td>Bastidor 2</td>
-                                <td class="col-action"><a href="#" class="link-action">Ver asignación</a></td>
-                            </tr>
-                            <tr>
-                                <td>Bastidor 3</td>
-                                <td class="col-action"><a href="#" class="link-action">Ver asignación</a></td>
-                            </tr>
-                            <t>
-                                <td>Bastidor 4</td>
-                                <td class="col-action"><a href="#" class="link-action">Ver asignación</a></td>
-                            </tr>
+                        <tbody id="bastidores-table-body">
+                            <!-- Se llenará dinámicamente -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Botón Volver -->
                 <div class="actions">
                     <a href="gestion-bastidores.html" class="btn-primary btn-primary--large">Volver</a>
                 </div>
             </section>
         </main>
-        
     </div>
-<<<<<<< Updated upstream
-=======
 
     <!-- Modal para "Ver asignación" -->
     <div class="modal" id="ver-asignacion-modal" style="display: none;">
-        <div class="modal__content" style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
             <h2>Asignación del Bastidor</h2>
             <p id="asignacion-info" style="margin: 1.5rem 0; font-size: 1.1rem;">Cargando...</p>
             <div style="text-align: right;">
@@ -187,8 +138,8 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const estudiante = link.getAttribute('data-estudiante');
-                    const info = estudiante 
-                        ? `Estudiante asignado: ${estudiante}` 
+                    const info = estudiante
+                        ? `Estudiante asignado: ${estudiante}`
                         : 'Sin estudiante asignado';
                     document.getElementById('asignacion-info').textContent = info;
                     document.getElementById('ver-asignacion-modal').style.display = 'flex';
@@ -219,7 +170,7 @@
         });
     </script>
 
->>>>>>> Stashed changes
     <script src="scripts/menu-loader.js"></script>
 </body>
+
 </html>
