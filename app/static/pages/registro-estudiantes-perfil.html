@@ -1,22 +1,18 @@
+<!-- app/static/pages/registro-estudiantes-perfil.html -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro de Estudiantes - Perfil</title>
     <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../stylepages.css">
     <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
 </head>
-
 <body>
     <div class="dashboard-wrapper">
-        <!-- Contenedor del menú lateral (debe estar vacío, el script lo llenará) -->
         <aside id="sidebar-placeholder"></aside>
-
         <main>
             <header class="header header--with-line">
                 <h1>Registro de Estudiantes</h1>
@@ -28,7 +24,6 @@
                     </div>
                 </div>
             </header>
-
             <section class="content content--detalle" aria-label="Perfil del estudiante">
                 <article class="detail-card">
                     <div class="detail-card__header">
@@ -37,40 +32,38 @@
                             <span class="detail-card__meta-label">Fecha de inscripción:</span>
                             <div class="meta-pill-group">
                                 <span class="meta-pill" id="fecha-inscripcion">Cargando...</span>
-                                <span class="meta-pill" id="hora-inscripcion">Cargando...</span>
                             </div>
                         </div>
                     </div>
-
                     <form class="detail-form">
                         <div class="detail-form__group">
                             <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Julian Esteban">
+                            <input type="text" id="nombre" name="nombre" placeholder="Julian Esteban" required>
                         </div>
                         <div class="detail-form__group">
                             <label for="apellido">Apellido</label>
-                            <input type="text" id="apellido" name="apellido" placeholder="Gutierrez Martinez">
+                            <input type="text" id="apellido" name="apellido" placeholder="Gutierrez Martinez" required>
                         </div>
                         <div class="detail-form__group">
                             <label for="documento">Documento (CC - TI):</label>
-                            <input type="text" id="documento" name="documento" placeholder="10022555548">
+                            <input type="text" id="documento" name="documento_identidad" placeholder="10022555548" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
                         </div>
                         <div class="detail-form__group">
                             <label for="telefono">Número de teléfono:</label>
-                            <input type="tel" id="telefono" name="telefono" placeholder="+57 3002252565">
+                            <input type="tel" id="telefono" name="telefono" placeholder="+57 3002252565" required>
                         </div>
                         <div class="detail-form__group">
-                            <label for="correo">Correo:</label>
-                            <input type="email" id="correo" name="correo" placeholder="estecorreo@gmail.com">
+                            <label for="correo_electronico">Correo electrónico:</label>
+                            <input type="email" id="correo_electronico" name="correo_electronico" placeholder="estecorreo@gmail.com" required>
                         </div>
-
                         <div class="detail-form__actions">
-                            <a href="gestion-pagos.html" class="btn-primary">Registrar Estudiante</a>
-                            <button type="button" class="btn-secondary btn-secondary--danger">Eliminar
-                                Estudiante</button>
+                            <button type="submit" class="btn-primary">Registrar Estudiante</button>
                         </div>
                     </form>
-
                     <div class="detail-card__footer">
                         <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
                     </div>
@@ -78,19 +71,13 @@
             </section>
         </main>
     </div>
-
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const now = new Date();
             const fecha = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
-            const hora = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true });
             document.getElementById('fecha-inscripcion').textContent = fecha;
-            document.getElementById('hora-inscripcion').textContent = hora;
         });
     </script>
-
-    <!-- Cargar el menú desde scripts/menu-loader.js -->
     <script src="scripts/menu-loader.js"></script>
 </body>
-
 </html>
