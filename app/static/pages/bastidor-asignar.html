@@ -26,20 +26,19 @@
                     </div>
                 </div>
             </header>
-            <!-- Contenido principal -->
             <section class="content content--detalle">
                 <article class="detail-card">
                     <div class="detail-card__header">
                         <h2>Asignar Bastidor</h2>
                     </div>
 
-                    <form class="assign-form">
+                    <form class="assign-form" id="assign-form">
                         <div class="detail-form__group">
                             <label for="identificacion">Identificación estudiante:</label>
                             <div class="field-row">
                                 <input type="text" id="identificacion" name="identificacion"
                                     placeholder="Ingrese la identificación del estudiante">
-                                <button type="button" class="btn-primary">Buscar</button>
+                                <button type="button" class="btn-primary" id="buscar-btn">Buscar</button>
                             </div>
                         </div>
 
@@ -47,19 +46,11 @@
                             <div class="field-row">
                                 <div class="field">
                                     <label for="nombre">Nombre</label>
-                                    <!-- 
-                                        COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
-                                        Debe mostrarse el nombre del estudiante encontrado en la base de datos.
-                                    -->
                                     <input type="text" id="nombre" name="nombre" placeholder="Nombre del estudiante"
                                         readonly>
                                 </div>
                                 <div class="field">
                                     <label for="apellido">Apellido</label>
-                                    <!-- 
-                                        COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
-                                        Debe mostrarse el apellido del estudiante encontrado en la base de datos.
-                                    -->
                                     <input type="text" id="apellido" name="apellido"
                                         placeholder="Apellido del estudiante" readonly>
                                 </div>
@@ -70,36 +61,236 @@
                             <div class="field-row">
                                 <div class="field">
                                     <label for="bastidor">Seleccionar Bastidor (Tamaño)</label>
-                                    <!-- 
-                                        COMENTARIO: Este menú desplegable debe contener las opciones de bastidores disponibles.
-                                        Cada opción debe tener un valor (por ejemplo, el ID o el tamaño) y mostrar el tamaño y el precio.
-                                    -->
                                     <select id="bastidor" name="bastidor">
-                                        <option value="" disabled selected>Seleccione un bastidor</option>
-                                        <option value="1">Tamaño A+ 20K</option>
-                                        <option value="2">Tamaño A 17K</option>
-                                        <option value="3">Tamaño B+ 15K</option>
-                                        <option value="4">Tamaño B 12K</option>
+                                        <option value="" disabled selected>Cargando bastidores...</option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
 
                         <div class="detail-form__actions">
-                            <!-- 
-                                COMENTARIO: El botón "Siguiente" debe redirigir a la página de gestión de pagos.
-                            -->
-                            <a href="gestion-pagos.html" class="btn-primary">Siguiente</a>
+                            <button type="button" class="btn-primary" id="siguiente-btn">Siguiente</button>
                             <a href="gestion-bastidores.html" class="btn-secondary"
-                                style="text-decoration: none;">Volver</a>
+                                style=" text-align: center; display: inline-block; text-decoration: none;">Volver</a>
                         </div>
                     </form>
                 </article>
             </section>
         </main>
     </div>
+
+    <!-- Modal: Método de Pago -->
+    <div class="modal" id="metodo-pago-modal">
+        <div class="modal__content">
+            <h2>Método de Pago</h2>
+            <div class="payment-options">
+                <a href="#" class="payment-option" id="nequi-trigger">
+                    <div class="payment-option__icon">
+                        <img src="../imgs/nequi.png" alt="Logo Nequi">
+                    </div>
+                    <div class="payment-option__label">Nequi</div>
+                </a>
+                <a href="#" class="payment-option" id="efectivo-trigger">
+                    <div class="payment-option__icon">
+                        <i class="fa-solid fa-money-bill-transfer fa-3x"></i>
+                    </div>
+                    <div class="payment-option__label">Efectivo</div>
+                </a>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancelar-pago-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Éxito -->
+    <div class="modal" id="exito-modal" style="display: none;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+            <h2>¡Asignación Exitosa!</h2>
+            <p id="mensaje-exito" style="margin: 1.5rem 0; font-size: 1.1rem;"></p>
+            <div style="text-align: right;">
+                <button type="button" class="btn-primary" id="finalizar-btn">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/menu-loader.js"></script>
+
+    <script>
+        let idEstudiante = null;
+        let idBastidorSeleccionado = null;
+        let precioBastidorSeleccionado = null;
+
+        async function cargarBastidores() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/bastidores/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const bastidores = await res.json();
+                const select = document.getElementById('bastidor');
+                select.innerHTML = '<option value="" disabled selected>Seleccione un bastidor</option>';
+                bastidores.forEach(b => {
+                    const option = document.createElement('option');
+                    option.value = b.id_bastidor;
+                    option.textContent = `${b.medidas} - $${b.precio.toLocaleString()}`;
+                    option.dataset.precio = b.precio; // ← ¡ESTA LÍNEA ES CLAVE!
+                    select.appendChild(option);
+                });
+            } catch (err) {
+                console.error(err);
+                alert('Error al cargar los bastidores.');
+            }
+        }
+        // Buscar estudiante por documento
+        document.getElementById('buscar-btn').addEventListener('click', async () => {
+            const documento = document.getElementById('identificacion').value.trim();
+            if (!documento) return alert('Ingrese un número de documento.');
+
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/estudiantes/perfil/${documento}`);
+                if (!res.ok) throw new Error('Estudiante no encontrado');
+                const estudiante = await res.json();
+                document.getElementById('nombre').value = estudiante.nombre;
+                document.getElementById('apellido').value = estudiante.apellido;
+                idEstudiante = estudiante.id_estudiante; // ← ¡ESTO ES CLAVE!
+            } catch (err) {
+                console.error(err);
+                alert('Estudiante no encontrado.');
+            }
+        });
+
+        // Manejar selección de bastidor
+        document.getElementById('bastidor').addEventListener('change', (e) => {
+            const option = e.target.options[e.target.selectedIndex];
+            idBastidorSeleccionado = option.value;
+            precioBastidorSeleccionado = option.dataset.precio;
+        });
+
+        // Mostrar modal de pago
+        document.getElementById('siguiente-btn').addEventListener('click', () => {
+            if (!idEstudiante) return alert('Primero busque un estudiante.');
+            if (!idBastidorSeleccionado) return alert('Seleccione un bastidor.');
+            document.getElementById('metodo-pago-modal').style.display = 'flex';
+        });
+
+        // Cerrar modales
+        document.getElementById('cancelar-pago-btn').addEventListener('click', () => {
+            document.getElementById('metodo-pago-modal').style.display = 'none';
+        });
+
+        document.getElementById('metodo-pago-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'metodo-pago-modal') {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Procesar pago (CON DEPURACIÓN COMPLETA DEL ERROR 422)
+        async function procesarPago(metodo) {
+            document.getElementById('metodo-pago-modal').style.display = 'none';
+
+            // ✅ Fecha en formato YYYY-MM-DD con ceros iniciales
+            const hoy = new Date();
+            const year = hoy.getFullYear();
+            const month = String(hoy.getMonth() + 1).padStart(2, '0');
+            const day = String(hoy.getDate()).padStart(2, '0');
+            const fecha = `${year}-${month}-${day}`;
+
+            // ✅ Asegurar que monto sea un número válido
+            const monto = parseFloat(precioBastidorSeleccionado);
+            if (isNaN(monto)) {
+                alert('Error: El precio del bastidor no es válido.');
+                return;
+            }
+
+            const pagoData = {
+                id_estudiante: idEstudiante,
+                tipo: "bastidor",
+                monto: monto,
+                fecha: fecha,
+                metodo_pago: metodo,
+                id_bastidor: parseInt(idBastidorSeleccionado)
+            };
+
+            try {
+                // 1. Registrar el pago
+                const resPago = await fetch('http://127.0.0.1:8000/api/pagos/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pagoData)
+                });
+
+                // ✅ MANEJO COMPLETO DEL ERROR 422
+                if (!resPago.ok) {
+                    const errorText = await resPago.text();
+                    console.error("Respuesta de error del backend:", errorText);
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.detail || "Error desconocido en el pago");
+                    } catch (e) {
+                        throw new Error(`Error del servidor: ${errorText}`);
+                    }
+                }
+
+                // 2. Registrar la relación estudiante-bastidor
+                const relacionData = {
+                    id_estudiante: idEstudiante,
+                    id_bastidor: parseInt(idBastidorSeleccionado)
+                };
+                const resRelacion = await fetch('http://127.0.0.1:8000/api/estudiante-bastidor/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(relacionData)
+                });
+                if (!resRelacion.ok) {
+                    const errorText = await resRelacion.text();
+                    console.error("Error al crear relación:", errorText);
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.detail || "Error al asignar el bastidor");
+                    } catch (e) {
+                        throw new Error(`Error del servidor: ${errorText}`);
+                    }
+                }
+
+                // 3. Mostrar éxito
+                const nombre = document.getElementById('nombre').value;
+                const apellido = document.getElementById('apellido').value;
+                const bastidor = document.querySelector(`#bastidor option[value="${idBastidorSeleccionado}"]`).textContent;
+                document.getElementById('mensaje-exito').textContent =
+                    `El bastidor ${bastidor} ha sido asignado a ${nombre} ${apellido}.`;
+                document.getElementById('exito-modal').style.display = 'flex';
+
+            } catch (err) {
+                console.error('Error en procesarPago:', err);
+                alert(`Error al procesar la asignación: ${err.message}. Intente nuevamente.`);
+            }
+        }
+
+        // Eventos para los botones de pago
+        document.getElementById('nequi-trigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            procesarPago('Nequi');
+        });
+
+        document.getElementById('efectivo-trigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            procesarPago('Efectivo');
+        });
+        // Finalizar y limpiar
+        document.getElementById('finalizar-btn').addEventListener('click', () => {
+            document.getElementById('exito-modal').style.display = 'none';
+            document.getElementById('assign-form').reset();
+            idEstudiante = null;
+            idBastidorSeleccionado = null;
+            precioBastidorSeleccionado = null;
+            cargarBastidores(); // Recargar la lista
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarBastidores();
+        });
+    </script>
 </body>
 
 </html>
