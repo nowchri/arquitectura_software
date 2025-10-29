@@ -105,9 +105,7 @@
                     </div>
                     <div class="perfil-actions">
                         <button type="button" class="btn-primary">Actualizar Datos</button>
-                        <button type="button" class="btn-secondary btn-secondary--danger"
-                            style="margin-top:12px;">Eliminar
-                            Estudiante</button>
+                        <button type="button" class="btn-secondary btn-secondary--danger" id="eliminar-estudiante-btn" style="margin-top:12px;">Eliminar Estudiante</button>
                     </div>
                 </div>
                 <span class="close-modal" id="cerrar-modal">&times;</span>
@@ -199,6 +197,39 @@
                 })
                 .then(data => {
                     alert("✅ Estudiante actualizado correctamente");
+                    document.getElementById("modal-perfil").classList.remove("modal--open");
+                    fetch("/api/estudiantes/")
+                        .then(res => res.json())
+                        .then(json => pintarEstudiantes(json));
+                })
+                .catch(err => alert("❌ Error: " + err.message));
+        };
+
+        document.getElementById("eliminar-estudiante-btn").onclick = function () {
+            if (!documentoActual) {
+                alert("Error: No se identificó el estudiante");
+                return;
+            }
+            if (!confirm("¿Seguro que deseas eliminar este estudiante? Esta acción no se puede deshacer.")) {
+                return;
+            }
+            // Llama el endpoint con el id (NO documento), así que primero hay que obtener el id del estudiante.
+            fetch(`/api/estudiantes/perfil/${documentoActual}`)
+                .then(res => {
+                    if (!res.ok) throw new Error("No encontrado");
+                    return res.json();
+                })
+                .then(est => {
+                    return fetch(`/api/estudiantes/${est.id_estudiante}`, {
+                        method: "DELETE"
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) return res.json().then(err => { throw new Error(err.detail) });
+                    return res.json();
+                })
+                .then(data => {
+                    alert("✅ Estudiante eliminado correctamente");
                     document.getElementById("modal-perfil").classList.remove("modal--open");
                     fetch("/api/estudiantes/")
                         .then(res => res.json())
