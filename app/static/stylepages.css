@@ -248,6 +248,17 @@ body {
 }
 
 /* ------------------------------ */
+/* FIN: Modal pop-up de perfil de estudiante */
+/* ------------------------------ */
+
+/* Modal pop-up de pagos de registro de estudiante */
+.payment-options-modal {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
 
 .dashboard-wrapper {
   width: 100%; /* <--- ocupa todo el ancho */

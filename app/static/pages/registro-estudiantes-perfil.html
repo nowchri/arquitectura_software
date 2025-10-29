@@ -64,6 +64,67 @@
                             <button type="submit" class="btn-primary">Registrar Estudiante</button>
                         </div>
                     </form>
+                    <!-- Modal Método de Pago -->
+                    <div class="modal" id="pago-modal" style="display:none;">
+                    <div class="modal__content">
+                        <h2>Selecciona método de pago</h2>
+                        <div class="payment-options-modal">
+                            <a href="#" class="payment-option" id="modal-nequi-trigger">
+                                <div class="payment-option__icon">
+                                <img src="../imgs/nequi.png" alt="Logo Nequi" style="width:60px; height:60px;">
+                                </div>
+                                <div class="payment-option__label">Nequi</div>
+                            </a>
+                            <a href="#" class="payment-option" id="modal-efectivo-trigger">
+                                <div class="payment-option__icon">
+                                <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
+                                </div>
+                                <div class="payment-option__label">Efectivo</div>
+                            </a>
+                            </div>
+                    </div>
+                    </div>
+
+                    <!-- Modal Nequi -->
+                    <div class="modal" id="nequi-modal" style="display:none;">
+                        <div class="modal__content">
+                            <h2>Pago con Nequi</h2>
+                            <div>
+                                <img src="../imgs/qr.jpg" alt="Código QR Nequi" style="max-width:200px;">
+                                <p>Número: <b>30135552547</b></p>
+                                <p>Propietaria: <b>Enriqueta Marcerla</b></p>
+                            </div>
+                            <div class="modal__footer">
+                                <button type="button" class="btn-secondary" id="btn-nequi-cancelar">Cancelar</button>
+                                <button type="button" class="btn-primary" id="btn-nequi-confirmar">Ya pagué</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Efectivo -->
+                    <div class="modal" id="efectivo-modal" style="display:none;">
+                        <div class="modal__content">
+                            <h2>Pago en Efectivo</h2>
+                            <p>¿El pago está registrado en caja?</p>
+                            <div class="modal__footer">
+                                <button type="button" class="btn-secondary" id="btn-efectivo-cancelar">Cancelar</button>
+                                <button type="button" class="btn-primary" id="btn-efectivo-confirmar">Sí, registrar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Exito -->
+                    <div class="modal" id="exito-modal" style="display:none;">
+                    <div class="modal__content">
+                        <h2>Pago por el Registro del Estudiante:</h2>
+                        <div>
+                        <span id="exito-nombre"></span>
+                        </div>
+                        <div class="modal__footer">
+                        <button type="button" class="btn-primary" id="btn-exito-cerrar">Finalizar</button>
+                        </div>
+                    </div>
+                    </div>
                     <div class="detail-card__footer">
                         <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
                     </div>
@@ -77,6 +138,90 @@
             const fecha = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
             document.getElementById('fecha-inscripcion').textContent = fecha;
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        let estudianteGuardado = null;
+        const form = document.querySelector('.detail-form');
+        let metodoPagoElegido = "";
+
+        // Maneja el submit
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.estado = "Inactivo";
+            data.fecha_inscripcion = new Date().toISOString().slice(0,10);
+            // Elimina id_plan si existe
+            if (!data.id_plan || data.id_plan === "null" || data.id_plan === "") {
+                delete data.id_plan;
+            }
+            estudianteGuardado = data;
+            document.getElementById('pago-modal').style.display = 'flex';
+        });
+
+        // Lógica para modales
+        document.getElementById('modal-nequi-trigger').onclick = function(e) {
+            e.preventDefault();
+            metodoPagoElegido = "Nequi";
+            document.getElementById('pago-modal').style.display = 'none';
+            document.getElementById('nequi-modal').style.display = 'flex';
+        };
+        document.getElementById('modal-efectivo-trigger').onclick = function(e) {
+            e.preventDefault();
+            metodoPagoElegido = "Efectivo";
+            document.getElementById('pago-modal').style.display = 'none';
+            document.getElementById('efectivo-modal').style.display = 'flex';
+        };
+        document.getElementById('btn-nequi-confirmar').onclick = function() {
+            document.getElementById('nequi-modal').style.display = 'none';
+            registrarEstudiante(estudianteGuardado, metodoPagoElegido);
+        };
+        document.getElementById('btn-efectivo-confirmar').onclick = function() {
+            document.getElementById('efectivo-modal').style.display = 'none';
+            registrarEstudiante(estudianteGuardado, metodoPagoElegido);
+        };
+        document.getElementById('btn-exito-cerrar').onclick = function() {
+            document.getElementById('exito-modal').style.display = 'none';
+            form.reset();
+        };
+        document.getElementById('btn-nequi-cancelar').onclick = function() {
+        document.getElementById('nequi-modal').style.display = 'none';
+        // Si quieres volver a mostrar el modal de métodos, descomenta:
+        // document.getElementById('pago-modal').style.display = 'flex';
+        };
+        document.getElementById('btn-efectivo-cancelar').onclick = function() {
+            document.getElementById('efectivo-modal').style.display = 'none';
+            // Si quieres volver a mostrar el modal de métodos, descomenta:
+            // document.getElementById('pago-modal').style.display = 'flex';
+        };
+
+        function registrarEstudiante(datos, metodo) {
+            fetch("/api/estudiantes/registro-completo/", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    estudiante: datos,
+                    metodo_pago: metodo
+                })
+            })
+            .then(resp => resp.json())
+            .then(resp => {
+                if (resp.id_estudiante && resp.id_pago) {
+                    document.getElementById('exito-nombre').textContent =
+                        resp.nombre + " " + resp.apellido + " ¡Registrado con éxito!";
+                    document.getElementById('exito-modal').style.display = 'flex';
+                } else if (resp.detail) {
+                    alert("Error: " + (typeof resp.detail === "string" ? resp.detail : JSON.stringify(resp.detail)));
+                } else {
+                    alert("Ocurrió un error inesperado: " + JSON.stringify(resp));
+                }
+            })
+            .catch(err => {
+                alert("Error inesperado: " + err);
+            });
+        }
+    });
+
     </script>
     <script src="scripts/menu-loader.js"></script>
 </body>

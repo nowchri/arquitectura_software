@@ -12,7 +12,7 @@ class EstudianteCreate(BaseModel):
     correo_electronico: str
     estado: str = "Inactivo"
     fecha_inscripcion: date
-    id_plan: int
+    id_plan: Optional[int] = None
 
 class EstudianteOut(BaseModel):
     id_estudiante: int
