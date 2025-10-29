@@ -1,0 +1,228 @@
+<!-- app/static/pages/registro-estudiantes-perfil.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Estudiantes - Perfil</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <aside id="sidebar-placeholder"></aside>
+        <main>
+            <header class="header header--with-line">
+                <h1>Registro de Estudiantes</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <section class="content content--detalle" aria-label="Perfil del estudiante">
+                <article class="detail-card">
+                    <div class="detail-card__header">
+                        <h2>Datos del Estudiante</h2>
+                        <div class="detail-card__meta">
+                            <span class="detail-card__meta-label">Fecha de inscripción:</span>
+                            <div class="meta-pill-group">
+                                <span class="meta-pill" id="fecha-inscripcion">Cargando...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="detail-form">
+                        <div class="detail-form__group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Julian Esteban" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" placeholder="Gutierrez Martinez" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="documento">Documento (CC - TI):</label>
+                            <input type="text" id="documento" name="documento_identidad" placeholder="10022555548" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="telefono">Número de teléfono:</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="+57 3002252565" required>
+                        </div>
+                        <div class="detail-form__group">
+                            <label for="correo_electronico">Correo electrónico:</label>
+                            <input type="email" id="correo_electronico" name="correo_electronico" placeholder="estecorreo@gmail.com" required>
+                        </div>
+                        <div class="detail-form__actions">
+                            <button type="submit" class="btn-primary">Registrar Estudiante</button>
+                        </div>
+                    </form>
+                    <!-- Modal Método de Pago -->
+                    <div class="modal" id="pago-modal" style="display:none;">
+                    <div class="modal__content">
+                        <h2>Selecciona método de pago</h2>
+                        <div class="payment-options-modal">
+                            <a href="#" class="payment-option" id="modal-nequi-trigger">
+                                <div class="payment-option__icon">
+                                <img src="../imgs/nequi.png" alt="Logo Nequi" style="width:60px; height:60px;">
+                                </div>
+                                <div class="payment-option__label">Nequi</div>
+                            </a>
+                            <a href="#" class="payment-option" id="modal-efectivo-trigger">
+                                <div class="payment-option__icon">
+                                <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
+                                </div>
+                                <div class="payment-option__label">Efectivo</div>
+                            </a>
+                            </div>
+                    </div>
+                    </div>
+
+                    <!-- Modal Nequi -->
+                    <div class="modal" id="nequi-modal" style="display:none;">
+                        <div class="modal__content">
+                            <h2>Pago con Nequi</h2>
+                            <div>
+                                <img src="../imgs/qr.jpg" alt="Código QR Nequi" style="max-width:200px;">
+                                <p>Número: <b>30135552547</b></p>
+                                <p>Propietaria: <b>Enriqueta Marcerla</b></p>
+                            </div>
+                            <div class="modal__footer">
+                                <button type="button" class="btn-secondary" id="btn-nequi-cancelar">Cancelar</button>
+                                <button type="button" class="btn-primary" id="btn-nequi-confirmar">Ya pagué</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal Efectivo -->
+                    <div class="modal" id="efectivo-modal" style="display:none;">
+                        <div class="modal__content">
+                            <h2>Pago en Efectivo</h2>
+                            <p>¿El pago está registrado en caja?</p>
+                            <div class="modal__footer">
+                                <button type="button" class="btn-secondary" id="btn-efectivo-cancelar">Cancelar</button>
+                                <button type="button" class="btn-primary" id="btn-efectivo-confirmar">Sí, registrar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Exito -->
+                    <div class="modal" id="exito-modal" style="display:none;">
+                    <div class="modal__content">
+                        <h2>Pago por el Registro del Estudiante:</h2>
+                        <div>
+                        <span id="exito-nombre"></span>
+                        </div>
+                        <div class="modal__footer">
+                        <button type="button" class="btn-primary" id="btn-exito-cerrar">Finalizar</button>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="detail-card__footer">
+                        <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            const fecha = now.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+            document.getElementById('fecha-inscripcion').textContent = fecha;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        let estudianteGuardado = null;
+        const form = document.querySelector('.detail-form');
+        let metodoPagoElegido = "";
+
+        // Maneja el submit
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.estado = "Inactivo";
+            data.fecha_inscripcion = new Date().toISOString().slice(0,10);
+            // Elimina id_plan si existe
+            if (!data.id_plan || data.id_plan === "null" || data.id_plan === "") {
+                delete data.id_plan;
+            }
+            estudianteGuardado = data;
+            document.getElementById('pago-modal').style.display = 'flex';
+        });
+
+        // Lógica para modales
+        document.getElementById('modal-nequi-trigger').onclick = function(e) {
+            e.preventDefault();
+            metodoPagoElegido = "Nequi";
+            document.getElementById('pago-modal').style.display = 'none';
+            document.getElementById('nequi-modal').style.display = 'flex';
+        };
+        document.getElementById('modal-efectivo-trigger').onclick = function(e) {
+            e.preventDefault();
+            metodoPagoElegido = "Efectivo";
+            document.getElementById('pago-modal').style.display = 'none';
+            document.getElementById('efectivo-modal').style.display = 'flex';
+        };
+        document.getElementById('btn-nequi-confirmar').onclick = function() {
+            document.getElementById('nequi-modal').style.display = 'none';
+            registrarEstudiante(estudianteGuardado, metodoPagoElegido);
+        };
+        document.getElementById('btn-efectivo-confirmar').onclick = function() {
+            document.getElementById('efectivo-modal').style.display = 'none';
+            registrarEstudiante(estudianteGuardado, metodoPagoElegido);
+        };
+        document.getElementById('btn-exito-cerrar').onclick = function() {
+            document.getElementById('exito-modal').style.display = 'none';
+            form.reset();
+        };
+        document.getElementById('btn-nequi-cancelar').onclick = function() {
+        document.getElementById('nequi-modal').style.display = 'none';
+        // Si quieres volver a mostrar el modal de métodos, descomenta:
+        // document.getElementById('pago-modal').style.display = 'flex';
+        };
+        document.getElementById('btn-efectivo-cancelar').onclick = function() {
+            document.getElementById('efectivo-modal').style.display = 'none';
+            // Si quieres volver a mostrar el modal de métodos, descomenta:
+            // document.getElementById('pago-modal').style.display = 'flex';
+        };
+
+        function registrarEstudiante(datos, metodo) {
+            fetch("/api/estudiantes/registro-completo/", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    estudiante: datos,
+                    metodo_pago: metodo
+                })
+            })
+            .then(resp => resp.json())
+            .then(resp => {
+                if (resp.id_estudiante && resp.id_pago) {
+                    document.getElementById('exito-nombre').textContent =
+                        resp.nombre + " " + resp.apellido + " ¡Registrado con éxito!";
+                    document.getElementById('exito-modal').style.display = 'flex';
+                } else if (resp.detail) {
+                    alert("Error: " + (typeof resp.detail === "string" ? resp.detail : JSON.stringify(resp.detail)));
+                } else {
+                    alert("Ocurrió un error inesperado: " + JSON.stringify(resp));
+                }
+            })
+            .catch(err => {
+                alert("Error inesperado: " + err);
+            });
+        }
+    });
+
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+</body>
+</html>

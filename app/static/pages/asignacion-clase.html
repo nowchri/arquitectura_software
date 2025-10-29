@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selección de Clases - Asignación de Plan de Clase</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-placeholder"></div>
+        <main>
+            <header>
+                <h1>Selección de plan de Clases</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <!-- Barra de pestañas -->
+                <div class="tab-bar">
+                    <div class="tab tab--active">Asignación de Plan de Clase</div>
+                </div>
+
+                <!-- Formulario para asignar plan de clase -->
+                <form class="assign-plan-form">
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="planes-disponibles">Planes de Clases Disponibles:</label>
+                            <!-- 
+                                COMENTARIO: Este menú desplegable debe contener los planes de clases disponibles en la base de datos.
+                                Cada opción debe tener un valor (por ejemplo, el ID del plan) y mostrar el nombre, cantidad de clases y precio.
+                                Por ejemplo, en JavaScript:
+                                const select = document.getElementById('planes-disponibles');
+                                planes.forEach(plan => {
+                                    const option = document.createElement('option');
+                                    option.value = plan.id;
+                                    option.textContent = `${plan.nombre} ${plan.cantidadClases} clases $${plan.precio}`;
+                                    select.appendChild(option);
+                                });
+                            -->
+                            <select id="planes-disponibles" name="planes-disponibles">
+                                <option value="" disabled selected>Seleccione un plan</option>
+                                <option value="1">Plan 1 4 clases $120.000</option>
+                                <option value="2">Plan 2 6 clases $150.000</option>
+                                <option value="3">Plan 3 8 clases $185.000</option>
+                                <option value="4">Plan 4 10 clases $215.000</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="valor-plan">Valor de plan de clases:</label>
+                            <!-- 
+                                COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
+                                Debe mostrar el precio del plan seleccionado.
+                                Por ejemplo, en JavaScript:
+                                document.getElementById('valor-plan').value = precioDelPlanSeleccionado;
+                            -->
+                            <input type="text" id="valor-plan" name="valor-plan" placeholder="$ 0.00" readonly>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="identificacion">Identificación estudiante:</label>
+                            <input type="text" id="identificacion" name="identificacion"
+                                placeholder="Ingrese la identificación del estudiante">
+                        </div>
+                        <div class="field" style="align-self: flex-end;">
+                            <button type="button" class="btn-primary">Buscar</button>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="nombre">Nombre</label>
+                            <!-- 
+                                COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
+                                Debe mostrarse el nombre del estudiante encontrado en la base de datos.
+                            -->
+                            <input type="text" id="nombre" name="nombre" placeholder="Nombre del estudiante" readonly>
+                        </div>
+                        <div class="field">
+                            <label for="apellido">Apellido</label>
+                            <!-- 
+                                COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
+                                Debe mostrarse el apellido del estudiante encontrado en la base de datos.
+                            -->
+                            <input type="text" id="apellido" name="apellido" placeholder="Apellido del estudiante"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <!-- 
+                            COMENTARIO: El botón "Siguiente" debe redirigir a la página de gestión de pagos.
+                        -->
+                        <a href="gestion-pagos.html" class="btn-primary">Siguiente</a>
+                        <a href="seleccion-clases.html" class="btn-secondary" style="text-decoration: none;">Volver</a>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>

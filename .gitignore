@@ -15,3 +15,4 @@ build/
 
 # Archivos de configuración local
 *.env
+*.roo

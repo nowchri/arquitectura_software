@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Estudiantes - Listado</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-placeholder"></div>
+
+        <main>
+            <header class="header header--with-line">
+                <h1>Registro de Estudiantes</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content content--listado" aria-label="Listado de estudiantes registrados">
+                <div class="tab-bar" role="tablist">
+                    <button class="tab tab--active" type="button" aria-selected="true">
+                        Ver Estudiantes Registrados
+                    </button>
+                    <button class="tab" type="button" aria-selected="false"
+                        onclick="location.href='registro-estudiantes-perfil.html'">
+                        Registrar Estudiante
+                    </button>
+                </div>
+
+                <form class="toolbar" role="search">
+                    <div class="field">
+                        <label for="documento">Documento:</label>
+                        <input type="text" id="documento" name="documento" placeholder="Ingresa número de documento">
+                    </div>
+                    <button type="submit" class="btn-primary">Buscar</button>
+                </form>
+
+                <!-- Contenedor con scroll fijo -->
+                <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Estudiante</th>
+                                <th class="col-action">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-tbody"></tbody>
+                    </table>
+                </div>
+
+                <div class="actions">
+                    <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Pop-up modal que muestra el perfil del estudiante seleccionado -->
+    <div id="modal-perfil" class="modal">
+        <div class="modal-content perfil-modal-flex">
+            <form id="perfil-estudiante-form" class="perfil-form">
+                <div class="perfil-left">
+                    <div class="detail-form__group">
+                        <label for="perfil-nombre">Nombre</label>
+                        <input type="text" id="perfil-nombre" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-apellido">Apellido</label>
+                        <input type="text" id="perfil-apellido" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-documento">Documento (CC - TI):</label>
+                        <input type="text" id="perfil-documento" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-telefono">Número de teléfono:</label>
+                        <input type="text" id="perfil-telefono" disabled>
+                    </div>
+                    <div class="detail-form__group">
+                        <label for="perfil-correo">Correo:</label>
+                        <input type="text" id="perfil-correo" disabled>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-primary" id="cerrar-modal-btn">Volver</button>
+                    </div>
+                </div>
+                <div class="perfil-right">
+                    <div class="detail-card__meta">
+                        <span class="detail-card__meta-label">Fecha de inscripción:</span>
+                        <div class="meta-pill-group">
+                            <span class="meta-pill" id="perfil-fecha">Cargando...</span>
+                        </div>
+                    </div>
+                    <div class="perfil-actions">
+                        <button type="button" class="btn-primary">Actualizar Datos</button>
+                        <button type="button" class="btn-secondary btn-secondary--danger" id="eliminar-estudiante-btn" style="margin-top:12px;">Eliminar Estudiante</button>
+                    </div>
+                </div>
+                <span class="close-modal" id="cerrar-modal">&times;</span>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let documentoActual = null;
+
+        function attachPerfilHandlers() {
+            document.querySelectorAll('.link-action[data-doc]').forEach(el => {
+                el.onclick = function (ev) {
+                    ev.preventDefault();
+                    const doc = this.getAttribute("data-doc");
+                    documentoActual = doc;
+                    fetch(`/api/estudiantes/perfil/${doc}`)
+                        .then(res => {
+                            if (!res.ok) throw new Error("No encontrado");
+                            return res.json()
+                        })
+                        .then(est => {
+                            document.getElementById("perfil-nombre").value = est.nombre;
+                            document.getElementById("perfil-apellido").value = est.apellido;
+                            document.getElementById("perfil-documento").value = est.documento_identidad;
+                            document.getElementById("perfil-telefono").value = est.telefono;
+                            document.getElementById("perfil-correo").value = est.correo_electronico;
+                            const fechaInscripcion = est.fecha_inscripcion ? new Date(est.fecha_inscripcion) : null;
+                            document.getElementById("perfil-fecha").textContent = fechaInscripcion
+                                ? fechaInscripcion.toLocaleDateString("es-CO", { year: 'numeric', month: 'short', day: 'numeric' })
+                                : '';
+
+                            document.getElementById("perfil-nombre").disabled = false;
+                            document.getElementById("perfil-apellido").disabled = false;
+                            document.getElementById("perfil-documento").disabled = false;
+                            document.getElementById("perfil-telefono").disabled = false;
+                            document.getElementById("perfil-correo").disabled = false;
+
+                            document.getElementById("modal-perfil").classList.add("modal--open");
+                        })
+                        .catch(() => alert("No se encontró el estudiante"));
+                };
+            });
+        }
+
+        function pintarEstudiantes(estudiantes) {
+            const tbody = document.getElementById("students-tbody");
+            tbody.innerHTML = "";
+            if (estudiantes.length === 0) {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td colspan="2" style="text-align:center;color:#c44;">No se encontraron estudiantes.</td>`;
+                tbody.appendChild(tr);
+                return;
+            }
+            estudiantes.forEach(e => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td>${e.nombre} ${e.apellido} (${e.estado})<br><small>Cédula: ${e.documento_identidad}</small></td>
+                <td><a href="#" class="link-action" data-doc="${e.documento_identidad}">Ver perfil</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            attachPerfilHandlers();
+        }
+
+        document.querySelector(".perfil-actions .btn-primary").onclick = function (e) {
+            e.preventDefault();
+            if (!documentoActual) {
+                alert("Error: No se identificó el estudiante");
+                return;
+            }
+
+            const datosActualizados = {
+                nombre: document.getElementById("perfil-nombre").value.trim(),
+                apellido: document.getElementById("perfil-apellido").value.trim(),
+                documento_identidad: document.getElementById("perfil-documento").value.trim(),
+                telefono: document.getElementById("perfil-telefono").value.trim(),
+                correo_electronico: document.getElementById("perfil-correo").value.trim()
+            };
+
+            fetch(`/api/estudiantes/${documentoActual}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosActualizados)
+            })
+                .then(res => {
+                    if (!res.ok) return res.json().then(err => { throw new Error(err.detail) });
+                    return res.json();
+                })
+                .then(data => {
+                    alert("✅ Estudiante actualizado correctamente");
+                    document.getElementById("modal-perfil").classList.remove("modal--open");
+                    fetch("/api/estudiantes/")
+                        .then(res => res.json())
+                        .then(json => pintarEstudiantes(json));
+                })
+                .catch(err => alert("❌ Error: " + err.message));
+        };
+
+        document.getElementById("eliminar-estudiante-btn").onclick = function () {
+            if (!documentoActual) {
+                alert("Error: No se identificó el estudiante");
+                return;
+            }
+            if (!confirm("¿Seguro que deseas eliminar este estudiante? Esta acción no se puede deshacer.")) {
+                return;
+            }
+            // Llama el endpoint con el id (NO documento), así que primero hay que obtener el id del estudiante.
+            fetch(`/api/estudiantes/perfil/${documentoActual}`)
+                .then(res => {
+                    if (!res.ok) throw new Error("No encontrado");
+                    return res.json();
+                })
+                .then(est => {
+                    return fetch(`/api/estudiantes/${est.id_estudiante}`, {
+                        method: "DELETE"
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) return res.json().then(err => { throw new Error(err.detail) });
+                    return res.json();
+                })
+                .then(data => {
+                    alert("✅ Estudiante eliminado correctamente");
+                    document.getElementById("modal-perfil").classList.remove("modal--open");
+                    fetch("/api/estudiantes/")
+                        .then(res => res.json())
+                        .then(json => pintarEstudiantes(json));
+                })
+                .catch(err => alert("❌ Error: " + err.message));
+        };
+
+        document.getElementById("cerrar-modal").onclick =
+            document.getElementById("cerrar-modal-btn").onclick = function () {
+                document.getElementById("modal-perfil").classList.remove("modal--open");
+            }
+
+        fetch("/api/estudiantes/")
+            .then(res => res.json())
+            .then(json => pintarEstudiantes(json));
+
+        document.querySelector(".toolbar").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const doc = document.getElementById("documento").value.trim();
+            let url = "/api/estudiantes/";
+            if (doc) url += `?documento=${encodeURIComponent(doc)}`;
+            fetch(url)
+                .then(res => res.json())
+                .then(json => pintarEstudiantes(json));
+        });
+    </script>
+
+    <!-- Cargar menú desde scripts/menu-loader.js -->
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>

@@ -1,19 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Academia de Arte</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academia Trazos & Latices - Inicio de Sesión</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-EwX3VbfTdkuTO7zd9cZq0YyJH9u4UYpJkk2oF6cLUpz6TUhxJztDUrVkieaiFTrNpjyxDctUqX1aWe4PxQYbog=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/x-icon" href="../static/imgs/logo_main.ico">
 </head>
+
 <body>
-    <div class="container">
-        <h1>🎨 Academia de Arte</h1>
-        <p>Bienvenido al sistema de gestión educativa.</p>
-        <ul>
-            <li><a href="#">Registrar estudiante</a></li>
-            <li><a href="#">Registrar pago</a></li>
-            <li><a href="/docs">API Docs (FastAPI)</a></li>
-        </ul>
-    </div>
+    <main>
+        <section class="layout">
+            <article class="login-panel">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <!-- Sustituye el contenido por tu logotipo -->
+                        <img src="/static/imgs/logo_main.jpg" alt="Logo Academia" />
+                    </div>
+                    <div class="panel-header">
+                        <h1>Inicio de Sesión</h1>
+                    </div>
+                </div>
+
+                <form>
+                    <div class="input-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña"
+                            required />
+                    </div>
+                    <label class="form-footer">
+                        <input type="checkbox" name="remember" />
+                        <span>Recordarme</span>
+                    </label>
+                    <button type="submit" class="submit-btn">Iniciar Sesión</button>
+
+
+                    <a href="/static/pages/Dashboard_ini.html">
+                        <button type="button" class="inicio-btn"> INICIO </button>
+                    </a>
+                    <div id="login-error" style="color:red"></div>
+                </form>
+
+                <footer>
+                    <p>© 2025 Academia — inspiración hecha arte</p>
+                    <p>
+                        <a href="#">Terms of Service</a> | <a href="#">Privacy policy</a>
+                    </p>
+                </footer>
+            </article>
+
+            <aside class="hero">
+                <!-- <img src="imgs/imgpop.jpg" alt="Imagen de fondo" class="hero-bg" /> -->
+                <div class="hero-content">
+                    <h2 class="hero-title">Bienvenido de vuelta</h2>
+                    <nav class="social-links" aria-label="Redes sociales">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    </nav>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const errorDiv = document.getElementById("login-error");
+
+            errorDiv.textContent = "";
+            const resp = await fetch("/api/login-admin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (resp.ok) {
+                const data = await resp.json();
+                window.location.href = "/static/pages/Dashboard_ini.html";
+            } else {
+                const err = await resp.json();
+                errorDiv.textContent = err.detail || "Error de login";
+            }
+        });
+    </script>
+
 </body>
+
 </html>

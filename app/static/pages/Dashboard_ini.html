@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <div id="sidebar-placeholder"></div>
+
+        <main>
+            <header>
+                <h1>Inicio</h1>
+                <div class="profile">
+                    <div>
+                        <span class="profile__role">Gerente</span>
+                    </div>
+                    <div class="profile__avatar">            
+                        <!-- Reemplaza por la foto de perfil -->
+                        <!-- <img src="ruta-foto-perfil.jpg" alt="Perfil Gerente"> -->
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente"> 
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content" aria-label="Accesos rápidos">
+                <article class="card">
+
+                    <div class="card__icon">
+                        <i class="fa-solid fa-user-graduate fa-0.1x"></i>
+                    </div>
+                    <a href="buscar-estudiantes-listado.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Ver Estudiantes Registrados</div>
+                    </a>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                    </div>
+                    <div class="card__label">Pagos pendientes / completados</div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <a href="bastidores-asignados.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Bastidores asignados</div>
+                    </a>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon">
+                        <i class="fa-solid fa-school"></i>
+                    </div>
+                    <a href="bastidores-asignados.html" style="text-decoration: none; color: inherit;">
+                        <div class="card__label">Asignar Clase</div>
+                    </a>
+                </article>
+            </section>
+        </main>
+    </div>
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selección de Clases - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+    <link rel="icon" type="image/x-icon" href="../imgs/logo_main.ico">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Este div será reemplazado por el menú -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Contenido principal -->
+
+        <main>
+            <header>
+                <h1>Selección de Clases</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+            <!-- Contenido principal -->
+            <section class="content content--listado">
+                <!-- Opciones de selección de clases -->
+                <div class="clases-options">
+                    <a href="asignacion-clase.html" class="clase-option">
+                        <div class="clase-option__icon">
+                            <i class="fa-solid fa-users-between-lines fa-3x"></i>
+                        </div>
+                        <div class="clase-option__label">Asignación de clases</div>
+                    </a>
+                    <a href="#" class="clase-option" id="crear-clase-trigger">
+                        <div class="clase-option__icon">
+                            <i class="fa-solid fa-chalkboard-user fa-3x"></i>
+                        </div>
+                        <div class="clase-option__label">Crear Clase</div>
+                    </a>
+                    <!-- Nueva tarjeta: Crear Plan de Clase -->
+                    <a href="#" class="clase-option" id="crear-plan-trigger">
+                        <div class="clase-option__icon">
+                            <i class="fa-solid fa-folder-plus fa-3x"></i>
+                        </div>
+                        <div class="clase-option__label">Crear Plan de Clase</div>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Popup (Modal) para Crear Clase -->
+    <div class="modal" id="crear-clase-modal">
+        <div class="modal__content">
+            <h2>Crear clase</h2>
+            <form class="create-class-form">
+
+                <!-- Select para Plan de clases -->
+                <div class="detail-form__group">
+                    <label for="plan-clase">Plan de clases:</label>
+                    <!-- 
+                        COMENTARIO: Este menú desplegable debe contener los planes de clases disponibles en la base de datos.
+                        Cada opción debe tener un valor (por ejemplo, el ID del plan) y mostrar el nombre del plan.
+                        Por ejemplo, en JavaScript:
+                        const select = document.getElementById('plan-clase');
+                        planes.forEach(plan => {
+                            const option = document.createElement('option');
+                            option.value = plan.id;
+                            option.textContent = plan.nombre;
+                            select.appendChild(option);
+                        });
+                    -->
+                    <select id="plan-clase" name="plan-clase">
+                        <option value="" disabled selected>Seleccione un plan</option>
+                        <option value="1">Plan 1</option>
+                        <option value="2">Plan 2</option>
+                        <option value="3">Plan 3</option>
+                        <option value="4">Plan 4</option>
+                    </select>
+                </div>
+                <div class="detail-form__group">
+                    <label for="nombre-clase">Nombre de la Clase:</label>
+                    <input type="text" id="nombre-clase" name="nombre-clase"
+                        placeholder="Pigmentación artística del cuerpo">
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="cantidad-clases">Cantidad de clases:</label>
+                        <!-- 
+                            COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
+                            Debe mostrar la cantidad de clases del plan seleccionado y ser de solo lectura.
+                            Por ejemplo, en JavaScript:
+                            document.getElementById('cantidad-clases').value = cantidadDeClasesDelPlanSeleccionado;
+                        -->
+                        <input type="number" id="cantidad-clases" name="cantidad-clases" placeholder="0" readonly>
+                    </div>
+                    <div class="field">
+                        <label for="horario-clase">Horario de la clase:</label>
+                        <select id="horario-clase" name="horario-clase">
+                            <option value="" disabled selected>Seleccione un horario</option>
+                            <option value="8am-10am">8 am a 10 am</option>
+                            <option value="10am-12pm">10 am a 12 pm</option>
+                            <option value="2pm-4pm">2 pm a 4 pm</option>
+                            <option value="4pm-6pm">4 pm a 6 pm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="detail-form__group">
+                    <label for="valor-plan">Valor plan de clases:</label>
+                    <!-- 
+                        COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
+                        Debe mostrar el precio del plan seleccionado y ser de solo lectura.
+                        Por ejemplo, en JavaScript:
+                        document.getElementById('valor-plan').value = precioDelPlanSeleccionado;
+                    -->
+                    <input type="text" id="valor-plan" name="valor-plan" placeholder="$ 0.00" readonly>
+                </div>
+                <div class="detail-form__actions">
+                    <button type="button" class="btn-primary" id="create-class-btn">Crear Clase</button>
+                    <button type="button" class="btn-secondary" id="cancel-create-btn">Volver</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Popup (Modal) para Crear Plan de Clase -->
+    <div class="modal" id="crear-plan-modal">
+        <div class="modal__content">
+            <h2>Plan de Clases</h2>
+            <form class="create-plan-form">
+
+                <div class="detail-form__group">
+                    <label for="nombre-plan">Nombre:</label>
+                    <input type="text" id="nombre-plan" name="nombre-plan" placeholder="Ingrese el nombre del plan">
+                </div>
+                <div class="detail-form__group">
+                    <label for="descripcion-plan">Descripcion:</label>
+                    <input type="text" id="descripcion-plan" name="descripcion-plan"
+                        placeholder="Ingrese la descripción del plan">
+                </div>
+                <div class="detail-form__group">
+                    <label for="numero-clases-mes">Numero de clases al mes:</label>
+                    <input type="number" id="numero-clases-mes" name="numero-clases-mes"
+                        placeholder="Ingrese el número de clases por mes">
+                </div>
+                <div class="detail-form__group">
+                    <label for="precio-mensualidad">Precio mensualidad:</label>
+                    <input type="number" id="precio-mensualidad" name="precio-mensualidad"
+                        placeholder="Ingrese el precio mensualidad">
+                </div>
+                <div class="detail-form__actions">
+                    <button type="button" class="btn-primary" id="create-plan-btn">Crear Plan</button>
+                    <button type="button" class="btn-secondary" id="cancel-plan-btn">Volver</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Script para manejar los popups
+        const crearClaseTrigger = document.getElementById('crear-clase-trigger');
+        const crearPlanTrigger = document.getElementById('crear-plan-trigger');
+        const crearClaseModal = document.getElementById('crear-clase-modal');
+        const crearPlanModal = document.getElementById('crear-plan-modal');
+        const createClassBtn = document.getElementById('create-class-btn');
+        const cancelCreateBtn = document.getElementById('cancel-create-btn');
+        const createPlanBtn = document.getElementById('create-plan-btn');
+        const cancelPlanBtn = document.getElementById('cancel-plan-btn');
+
+        // Mostrar el modal de Crear Clase al hacer clic
+        crearClaseTrigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            crearClaseModal.style.display = 'flex';
+        });
+
+        // Mostrar el modal de Crear Plan de Clase al hacer clic
+        crearPlanTrigger.addEventListener('click', function (e) {
+            e.preventDefault();
+            crearPlanModal.style.display = 'flex';
+        });
+
+        // Cerrar el modal de Crear Clase
+        cancelCreateBtn.addEventListener('click', function () {
+            crearClaseModal.style.display = 'none';
+        });
+
+        // Cerrar el modal de Crear Plan de Clase
+        cancelPlanBtn.addEventListener('click', function () {
+            crearPlanModal.style.display = 'none';
+        });
+
+        // Cerrar los modales si se hace clic fuera del contenido
+        crearClaseModal.addEventListener('click', function (e) {
+            if (e.target === crearClaseModal) {
+                crearClaseModal.style.display = 'none';
+            }
+        });
+
+        crearPlanModal.addEventListener('click', function (e) {
+            if (e.target === crearPlanModal) {
+                crearPlanModal.style.display = 'none';
+            }
+        });
+
+        // Función para cargar el menú
+
+    </script>
+    <script src="scripts/menu-loader.js"></script>
+
+
+</body>
+
+</html>

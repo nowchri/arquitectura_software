@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bastidores Asignados - Academia Trazos & Latices</title>
+    <script src="https://kit.fontawesome.com/668c4bf34c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../stylepages.css">
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Menú lateral -->
+        <aside id="sidebar-placeholder">
+            <!-- El menú se cargará dinámicamente aquí -->
+        </aside>
+
+        <main>
+            <header>
+                <h1>Bastidores Asignados</h1>
+                <div class="profile">
+                    <span class="profile__role">Gerente</span>
+                    <div class="profile__avatar">
+                        <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
+                        <span class="profile__status" aria-hidden="true"></span>
+                    </div>
+                </div>
+            </header>
+
+            <section class="content content--listado">
+                <div class="tab-bar">
+                    <div class="tab tab--active">Ver Bastidores Asignados</div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="field">
+                        <label for="buscar-bastidor">Buscar por ID bastidor:</label>
+                        <input type="text" id="buscar-bastidor" name="buscar-bastidor"
+                            placeholder="Ingrese el ID del bastidor">
+                    </div>
+                    <button type="button" class="btn-primary" id="buscar-btn">Buscar</button>
+                </div>
+
+                <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th>ID Bastidor</th>
+                                <th>Medidas</th>
+                                <th>Precio</th>
+
+                                <th class="col-action">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bastidores-table-body">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="actions">
+                    <a href="gestion-bastidores.html" class="btn-primary btn-primary--large">Volver</a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para "Ver asignación" -->
+    <div class="modal" id="ver-asignacion-modal" style="display: none;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+            <h2>Asignación del Bastidor</h2>
+            <p id="asignacion-info" style="margin: 1.5rem 0; font-size: 1.1rem;">Cargando...</p>
+            <div style="text-align: right;">
+                <button type="button" class="btn-secondary" id="close-asignacion-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function cargarAsignaciones() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/estudiante-bastidor/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const data = await res.json();
+                renderizarTabla(data);
+            } catch (err) {
+                console.error(err);
+                alert('Error al cargar las asignaciones.');
+            }
+        }
+
+        async function buscarAsignacion(id_bastidor) {
+            if (!id_bastidor) return cargarAsignaciones();
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/estudiante-bastidor/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const data = await res.json();
+                const asignacionesFiltradas = data.filter(a => a.id_bastidor == id_bastidor);
+                renderizarTabla(asignacionesFiltradas);
+            } catch (err) {
+                console.error(err);
+                alert('Error al buscar la asignación.');
+            }
+        }
+
+        function renderizarTabla(asignaciones) {
+            const tbody = document.getElementById('bastidores-table-body');
+            tbody.innerHTML = '';
+            asignaciones.forEach(a => {
+                const nombreEstudiante = a.estudiante ? `${a.estudiante.nombre} ${a.estudiante.apellido}` : 'Sin estudiante';
+                const medidas = a.bastidor ? a.bastidor.medidas : 'N/A';
+                const precio = a.bastidor ? `$${a.bastidor.precio.toLocaleString()}` : 'N/A';
+                const row = `<tr>
+                <td>${a.id_bastidor}</td>
+                <td>${medidas}</td>
+                <td>${precio}</td>
+                
+                <td class="col-action">
+                    <a href="#" class="link-action" data-id="${a.id_registro_eb}">
+                        Ver asignación
+                    </a>
+                </td>
+            </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            // Reasignar eventos a los enlaces
+            document.querySelectorAll('.link-action').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const idRegistro = link.getAttribute('data-id');
+                    const asignacion = asignaciones.find(a => a.id_registro_eb == idRegistro);
+                    const nombreEstudiante = asignacion.estudiante
+                        ? `${asignacion.estudiante.nombre} ${asignacion.estudiante.apellido}`
+                        : 'Sin estudiante asignado';
+                    document.getElementById('asignacion-info').textContent = `Estudiante asignado: ${nombreEstudiante}`;
+                    document.getElementById('ver-asignacion-modal').style.display = 'flex';
+                });
+            });
+        }
+
+        // Evento al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarAsignaciones();
+
+            document.getElementById('buscar-btn').addEventListener('click', () => {
+                const id = document.getElementById('buscar-bastidor').value.trim();
+                buscarAsignacion(id);
+            });
+
+            document.getElementById('close-asignacion-btn').addEventListener('click', () => {
+                document.getElementById('ver-asignacion-modal').style.display = 'none';
+            });
+
+            document.getElementById('ver-asignacion-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'ver-asignacion-modal') {
+                    e.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script src="scripts/menu-loader.js"></script>
+</body>
+
+</html>
