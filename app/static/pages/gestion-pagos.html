@@ -29,196 +29,128 @@
             </header>
             <!-- Contenido principal -->
             <section class="content content--listado">
-
-                <!-- Opciones de pago -->
-                <div class="payment-options">
-                    <a href="#" class="payment-option" id="nequi-trigger">
-                        <div class="payment-option__icon">
-                            <img src="../imgs/nequi.png" alt="Logo Nequi">
-                        </div>
-                        <div class="payment-option__label">Nequi</div>
-                    </a>
-                    <a href="#" class="payment-option" id="efectivo-trigger">
-                        <div class="payment-option__icon">
-                            <i class="fa-solid fa-money-bill-transfer fa-4x"></i>
-                        </div>
-                        <div class="payment-option__label">Efectivo</div>
-                    </a>
+                <form class="toolbar" role="search">
+                    <div class="field">
+                        <label for="pago-documento">Documento:</label>
+                        <input type="text" id="pago-documento" placeholder="Ingresa número de documento">
+                    </div>
+                    <button type="submit" class="btn-primary">Buscar</button>
+                </form>
+                <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+                    <table class="students-table">
+                        <thead>
+                            <tr>
+                                <th>Estudiante</th>
+                                <th>Detalle Pago</th>
+                                <th class="col-action">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagos-tbody"></tbody>
+                    </table>
                 </div>
-
-                <!-- Botón Volver -->
                 <div class="actions">
                     <a href="registro-estudiantes.html" class="btn-primary btn-primary--large">Volver</a>
                 </div>
             </section>
-        </main>
-    </div>
-    <!-- Popup (Modal) para Nequi -->
-    <div class="modal" id="nequi-modal">
-        <div class="modal__content">
-            <h2>Nuestros datos:</h2>
-            <div class="modal__body">
-                <img src="../imgs/qr.jpg" alt="Código QR Nequi" class="modal__qr">
-                <div class="modal__info">
-                    <p><strong style="color: var(--accent);">Número de teléfono:</strong><br>30135552547</p>
-                    <p><strong style="color: var(--accent);">Nombre propietario:</strong><br>Enriqueta Marcerla</p>
+            <!-- Modal para detalle de pago -->
+            <div id="modal-pago" class="modal">
+                <div class="modal-content perfil-modal-flex">
+                    <div class="perfil-form" id="detalle-pago-modal" style="width:100%;"></div>
+                    <span class="close-modal" id="cerrar-modal-pago">&times;</span>
                 </div>
             </div>
-            <div class="modal__footer">
-                <button type="button" class="btn-secondary" id="cancel-nequi-btn">Cancelar</button>
-                <button type="button" class="btn-primary" id="next-nequi-btn">Siguiente</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Popup (Modal) para Efectivo -->
-    <div class="modal" id="efectivo-modal">
-        <div class="modal__content">
-            <h2>Pago En Efectivo:</h2>
-            <div class="modal__body modal__body--question">
-                <p>¿El pago está registrado en la caja?</p>
-            </div>
-            <div class="modal__footer">
-                <button type="button" class="btn-secondary" id="cancel-efectivo-btn">Cancelar</button>
-                <button type="button" class="btn-primary" id="next-efectivo-btn">Siguiente</button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Popup (Modal) para Nequi -->
-    <div class="modal" id="nequi-modal">
-        <div class="modal__content">
-            <h2>Nuestros datos:</h2>
-            <div class="modal__body">
-                <img src="../imgs/nequi-qr.png" alt="Código QR Nequi" class="modal__qr">
-                <div class="modal__info">
-                    <p><strong style="color: var(--accent);">Número de teléfono:</strong><br>30135552547</p>
-                    <p><strong style="color: var(--accent);">Nombre propietario:</strong><br>Enriqueta Marcerla</p>
-                </div>
-            </div>
-            <div class="modal__footer">
-                <button type="button" class="btn-secondary" id="cancel-nequi-btn">Cancelar</button>
-                <!-- Al hacer clic en "Siguiente", se abre el popup de confirmación -->
-                <button type="button" class="btn-primary" id="next-nequi-btn">Siguiente</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Popup (Modal) para Efectivo -->
-    <div class="modal" id="efectivo-modal">
-        <div class="modal__content">
-            <h2>Pago En Efectivo:</h2>
-            <div class="modal__body modal__body--question">
-                <p>¿El pago está registrado en la caja?</p>
-            </div>
-            <div class="modal__footer">
-                <button type="button" class="btn-secondary" id="cancel-efectivo-btn">Cancelar</button>
-                <!-- Al hacer clic en "Siguiente", se abre el popup de confirmación -->
-                <button type="button" class="btn-primary" id="next-efectivo-btn">Siguiente</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Popup (Modal) de Confirmación Final -->
-    <!-- Este es el nuevo popup que muestra el nombre del estudiante -->
-    <div class="modal" id="confirmacion-modal">
-        <div class="modal__content">
-            <h2>Pago por el Registro del Estudiante:</h2>
-            <!-- 
-                COMENTARIO: Aquí va el nombre del estudiante.
-                En un entorno real, este valor no sería estático.
-                Debería ser reemplazado por una variable o un elemento dinámico que traiga el dato desde la base de datos.
-                Por ejemplo, si usas JavaScript, podrías tener algo como:
-                document.getElementById('student-name').textContent = nombreDelEstudiante;
-            -->
-            <div class="modal__body modal__body--confirmation">
-                <p id="student-name">Fuan Felipe Filimeno Foo</p>
-            </div>
-            <div class="modal__footer">
-                <!-- 
-                    COMENTARIO: El botón "Finalizar" debería ejecutar una acción en el backend,
-                    como registrar el pago en la base de datos y redirigir al usuario a otra página.
-                -->
-                <a href="../pages/registro-estudiantes-perfil.html">
-                    <button type="button" class="btn-primary" id="finalize-btn">Finalizar</button>
-                </a>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // Script para manejar los popups
-        const nequiTrigger = document.getElementById('nequi-trigger');
-        const efectivoTrigger = document.getElementById('efectivo-trigger');
-        const nequiModal = document.getElementById('nequi-modal');
-        const efectivoModal = document.getElementById('efectivo-modal');
-        const confirmacionModal = document.getElementById('confirmacion-modal'); // Nuevo modal
-        const cancelNequiBtn = document.getElementById('cancel-nequi-btn');
-        const nextNequiBtn = document.getElementById('next-nequi-btn');
-        const cancelEfectivoBtn = document.getElementById('cancel-efectivo-btn');
-        const nextEfectivoBtn = document.getElementById('next-efectivo-btn');
-        const finalizeBtn = document.getElementById('finalize-btn'); // Botón de finalización
+        function mostrarDetallePago(pago) {
+    let html = `
+        <div style="flex:1;">
+            <h3>Estudiante</h3>
+            <b>${pago.nombre_estudiante} (${pago.documento_estudiante})</b>
+            <hr>
+            <h3>Pago</h3>
+            <ul>
+                <li><b>Tipo:</b> ${pago.tipo}</li>
+                <li><b>Monto:</b> $${pago.monto}</li>
+                <li><b>Método de pago:</b> ${pago.metodo_pago}</li>
+                <li><b>Fecha:</b> ${pago.fecha}</li>
+                <li><b>Estado:</b> ${pago.estado}</li>
+            </ul>
+    `;
+    if (pago.tipo === "bastidor") {
+        html += `<h4>Bastidor</h4>
+                <ul><li><b>Medidas:</b> ${pago.bastidor_medidas || "N/A"}</li></ul>`;
+    } else if (pago.tipo === "mensualidad") {
+        html += `<h4>Plan de Clases</h4>
+            <ul>
+                <li><b>Nombre:</b> ${pago.plan_nombre || "N/A"}</li>
+                <li><b>Número de clases/mes:</b> ${pago.plan_numero_clases || "N/A"}</li>
+            </ul>`;
+    } else { // inscripción
+        html += `<b>Plan:</b> N/A<br><b>Bastidor:</b> N/A<br>`;
+    }
+    html += "</div>";
+    document.getElementById('detalle-pago-modal').innerHTML = html;
+    document.getElementById('modal-pago').classList.add('modal--open');
+}
 
-        // Mostrar el modal de Nequi al hacer clic
-        nequiTrigger.addEventListener('click', function (e) {
+function pintarPagos(pagos) {
+    const tbody = document.getElementById("pagos-tbody");
+    tbody.innerHTML = "";
+    if (pagos.length === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="3" style="text-align:center;color:#c44;">No se encontraron pagos.</td>`;
+        tbody.appendChild(tr);
+        return;
+    }
+    pagos.forEach(pago => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>
+                ${pago.nombre_estudiante} <br>
+                <small>Cédula: ${pago.documento_estudiante}</small>
+            </td>
+            <td>
+                ${pago.tipo} - $${pago.monto} <br>
+                <small>Método: ${pago.metodo_pago}</small>
+            </td>
+            <td>
+                <a href="#" class="link-action ver-pago-btn" data-id="${pago.id_pago}">Ver pago</a>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    document.querySelectorAll('.ver-pago-btn').forEach(btn => {
+        btn.onclick = function(e) {
             e.preventDefault();
-            nequiModal.style.display = 'flex';
-        });
+            const id = this.getAttribute("data-id");
+            // Si quieres pedir el pago al backend por /api/pagos/{id_pago},
+            // puedes hacerlo aquí, pero como ya tenemos toda la info, buscamos local
+            const pago = pagos.find(p => p.id_pago == id);
+            mostrarDetallePago(pago);
+        };
+    });
+}
 
-        // Mostrar el modal de Efectivo al hacer clic
-        efectivoTrigger.addEventListener('click', function (e) {
-            e.preventDefault();
-            efectivoModal.style.display = 'flex';
-        });
+// Cerrar modal
+document.getElementById('cerrar-modal-pago').onclick = function() {
+    document.getElementById('modal-pago').classList.remove('modal--open');
+};
 
-        // Cerrar el modal de Nequi
-        cancelNequiBtn.addEventListener('click', function () {
-            nequiModal.style.display = 'none';
-        });
+// Buscar pagos
+function cargarPagos(documento=null) {
+    let url = "/api/pagos/";
+    if (documento) url += "?documento=" + encodeURIComponent(documento);
+    fetch(url)
+        .then(res => res.json())
+        .then(json => pintarPagos(json));
+}
+cargarPagos();
 
-        // Abrir el modal de confirmación al hacer clic en "Siguiente" de Nequi
-        nextNequiBtn.addEventListener('click', function () {
-            nequiModal.style.display = 'none';
-            confirmacionModal.style.display = 'flex';
-        });
-
-        // Cerrar el modal de Efectivo
-        cancelEfectivoBtn.addEventListener('click', function () {
-            efectivoModal.style.display = 'none';
-        });
-
-        // Abrir el modal de confirmación al hacer clic en "Siguiente" de Efectivo
-        nextEfectivoBtn.addEventListener('click', function () {
-            efectivoModal.style.display = 'none';
-            confirmacionModal.style.display = 'flex';
-        });
-
-        // Cerrar el modal de confirmación
-        finalizeBtn.addEventListener('click', function () {
-            confirmacionModal.style.display = 'none';
-            // Aquí puedes agregar lógica adicional, como redirigir a otra página o mostrar un mensaje de éxito
-            alert("¡Pago registrado con éxito!");
-        });
-
-        // Cerrar los modales si se hace clic fuera del contenido
-        nequiModal.addEventListener('click', function (e) {
-            if (e.target === nequiModal) {
-                nequiModal.style.display = 'none';
-            }
-        });
-
-        efectivoModal.addEventListener('click', function (e) {
-            if (e.target === efectivoModal) {
-                efectivoModal.style.display = 'none';
-            }
-        });
-
-        confirmacionModal.addEventListener('click', function (e) {
-            if (e.target === confirmacionModal) {
-                confirmacionModal.style.display = 'none';
-            }
-        });
+document.querySelector(".toolbar").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const doc = document.getElementById("pago-documento").value.trim();
+    cargarPagos(doc);
+});
     </script>
     <script src="scripts/menu-loader.js"></script>
 </body>
