@@ -1,5 +1,5 @@
 # app/models/clase.py
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, CheckConstraint
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -13,6 +13,7 @@ class Clase(Base):
     id_plan = Column(Integer, ForeignKey("plan_de_clases.id_plan"))
     id_estudiante = Column(Integer, ForeignKey("estudiante.id_estudiante"))
 
+    # Relaciones inversas
     plan = relationship("PlanDeClases", back_populates="clases")
     estudiante = relationship("Estudiante", back_populates="clases")
     asistencias = relationship("Asistencia", back_populates="clase")

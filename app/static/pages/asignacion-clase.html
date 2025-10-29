@@ -22,51 +22,25 @@
                     <span class="profile__role">Gerente</span>
                     <div class="profile__avatar">
                         <img src="../imgs/img-admin.webp" alt="Perfil Gerente">
-                        <!--<img src="../imgs/gerente.jpg" alt="Perfil Gerente">-->
                         <span class="profile__status" aria-hidden="true"></span>
                     </div>
                 </div>
             </header>
-            <!-- Contenido principal -->
             <section class="content content--listado">
-                <!-- Barra de pestañas -->
                 <div class="tab-bar">
                     <div class="tab tab--active">Asignación de Plan de Clase</div>
                 </div>
 
-                <!-- Formulario para asignar plan de clase -->
-                <form class="assign-plan-form">
+                <form class="assign-plan-form" id="assign-form">
                     <div class="field-row">
                         <div class="field">
                             <label for="planes-disponibles">Planes de Clases Disponibles:</label>
-                            <!-- 
-                                COMENTARIO: Este menú desplegable debe contener los planes de clases disponibles en la base de datos.
-                                Cada opción debe tener un valor (por ejemplo, el ID del plan) y mostrar el nombre, cantidad de clases y precio.
-                                Por ejemplo, en JavaScript:
-                                const select = document.getElementById('planes-disponibles');
-                                planes.forEach(plan => {
-                                    const option = document.createElement('option');
-                                    option.value = plan.id;
-                                    option.textContent = `${plan.nombre} ${plan.cantidadClases} clases $${plan.precio}`;
-                                    select.appendChild(option);
-                                });
-                            -->
                             <select id="planes-disponibles" name="planes-disponibles">
-                                <option value="" disabled selected>Seleccione un plan</option>
-                                <option value="1">Plan 1 4 clases $120.000</option>
-                                <option value="2">Plan 2 6 clases $150.000</option>
-                                <option value="3">Plan 3 8 clases $185.000</option>
-                                <option value="4">Plan 4 10 clases $215.000</option>
+                                <option value="" disabled selected>Cargando planes...</option>
                             </select>
                         </div>
                         <div class="field">
                             <label for="valor-plan">Valor de plan de clases:</label>
-                            <!-- 
-                                COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
-                                Debe mostrar el precio del plan seleccionado.
-                                Por ejemplo, en JavaScript:
-                                document.getElementById('valor-plan').value = precioDelPlanSeleccionado;
-                            -->
                             <input type="text" id="valor-plan" name="valor-plan" placeholder="$ 0.00" readonly>
                         </div>
                     </div>
@@ -77,43 +51,330 @@
                                 placeholder="Ingrese la identificación del estudiante">
                         </div>
                         <div class="field" style="align-self: flex-end;">
-                            <button type="button" class="btn-primary">Buscar</button>
+                            <button type="button" class="btn-primary" id="buscar-btn">Buscar</button>
                         </div>
                     </div>
 
                     <div class="field-row">
                         <div class="field">
                             <label for="nombre">Nombre</label>
-                            <!-- 
-                                COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
-                                Debe mostrarse el nombre del estudiante encontrado en la base de datos.
-                            -->
                             <input type="text" id="nombre" name="nombre" placeholder="Nombre del estudiante" readonly>
                         </div>
                         <div class="field">
                             <label for="apellido">Apellido</label>
-                            <!-- 
-                                COMENTARIO: Este campo debe ser llenado dinámicamente después de hacer la búsqueda.
-                                Debe mostrarse el apellido del estudiante encontrado en la base de datos.
-                            -->
                             <input type="text" id="apellido" name="apellido" placeholder="Apellido del estudiante"
                                 readonly>
                         </div>
                     </div>
 
+                    <div class="field-row">
+                        <div class="field" style="grid-column: span 2;">
+                            <button type="button" class="btn-primary" id="seleccionar-clases-btn">Seleccionar
+                                Clases</button>
+                        </div>
+                    </div>
+
                     <div class="actions">
-                        <!-- 
-                            COMENTARIO: El botón "Siguiente" debe redirigir a la página de gestión de pagos.
-                        -->
-                        <a href="gestion-pagos.html" class="btn-primary">Siguiente</a>
-                        <a href="seleccion-clases.html" class="btn-secondary" style="text-decoration: none;">Volver</a>
+                        <button type="button" class="btn-primary" id="finalizar-btn">Finalizar</button>
+                        <a href="seleccion-clases.html" class="btn-secondary"
+                            style="text-align: center; text-decoration: none;">Volver</a>
                     </div>
                 </form>
             </section>
         </main>
     </div>
 
+    <!-- Modal: Seleccionar Clases -->
+    <div class="modal" id="seleccionar-clases-modal" style="display: none;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 800px;">
+            <h2>Seleccionar Clases</h2>
+            <p id="limite-clases-info" style="margin-bottom: 1rem; font-weight: 500;"></p>
+            <div class="table-wrapper" style="max-height: 400px; overflow-y: auto;">
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>Seleccionar</th>
+                            <th>Nombre</th>
+                            <th>Fecha y Hora</th>
+                            <th>Plan Asignado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clases-table-body"></tbody>
+                </table>
+            </div>
+            <div style="text-align: right; margin-top: 1rem;">
+                <button type="button" class="btn-secondary" id="cerrar-clases-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Método de Pago -->
+    <div class="modal" id="metodo-pago-modal" style="display: none;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+            <h2>Método de Pago</h2>
+            <div class="payment-options" style="display: flex; justify-content: center; gap: 2rem; margin: 2rem 0;">
+                <a href="#" class="payment-option" id="nequi-trigger"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 120px; height: 120px; background-color: var(--panel-bg); border: 2px solid var(--border); border-radius: 18px; text-decoration: none; color: inherit;">
+                    <div class="payment-option__icon"
+                        style="width: 100%; height: 80px; display: flex; align-items: center; justify-content: center;">
+                        <img src="../imgs/nequi.png" alt="Logo Nequi"
+                            style="max-width: 80%; max-height: 80%; object-fit: contain;">
+                    </div>
+                    <div class="payment-option__label" style="margin-top: 0.5rem; font-size: 1rem; font-weight: 600;">
+                        Nequi</div>
+                </a>
+                <a href="#" class="payment-option" id="efectivo-trigger"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 120px; height: 120px; background-color: var(--panel-bg); border: 2px solid var(--border); border-radius: 18px; text-decoration: none; color: inherit;">
+                    <div class="payment-option__icon"
+                        style="width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; color: var(--text-dark);">
+                        <i class="fa-solid fa-money-bill-transfer fa-3x"></i>
+                    </div>
+                    <div class="payment-option__label" style="margin-top: 0.5rem; font-size: 1rem; font-weight: 600;">
+                        Efectivo</div>
+                </a>
+            </div>
+            <div style="text-align: right;">
+                <button type="button" class="btn-secondary" id="cancelar-pago-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Éxito -->
+    <div class="modal" id="exito-modal" style="display: none;">
+        <div class="modal__content"
+            style="background: var(--panel-bg); border-radius: 18px; padding: 2rem; max-width: 500px;">
+            <h2>¡Asignación Exitosa!</h2>
+            <p>El plan y las clases han sido asignados al estudiante.</p>
+            <div style="text-align: right;">
+                <button type="button" class="btn-primary" id="cerrar-exito-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/menu-loader.js"></script>
+
+    <script>
+        let idEstudiante = null;
+        let planSeleccionado = null;
+        let clasesSeleccionadas = [];
+
+        // Cargar planes al iniciar
+        async function cargarPlanes() {
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/planes-de-clase/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const planes = await res.json();
+                const select = document.getElementById('planes-disponibles');
+                select.innerHTML = '<option value="" disabled selected>Seleccione un plan</option>';
+                planes.forEach(plan => {
+                    const option = document.createElement('option');
+                    option.value = plan.id_plan;
+                    option.textContent = `${plan.nombre} - ${plan.numero_de_clases_mes} clases - $${plan.precio_mensualidad.toLocaleString()}`;
+                    option.dataset.clases = plan.numero_de_clases_mes;
+                    option.dataset.precio = plan.precio_mensualidad;
+                    select.appendChild(option);
+                });
+            } catch (err) {
+                console.error(err);
+                alert('Error al cargar los planes.');
+            }
+        }
+
+        // Manejar selección de plan
+        document.getElementById('planes-disponibles').addEventListener('change', (e) => {
+            const option = e.target.options[e.target.selectedIndex];
+            if (option.value) {
+                document.getElementById('valor-plan').value = `$${parseFloat(option.dataset.precio).toLocaleString()}`;
+                planSeleccionado = {
+                    id: parseInt(option.value),
+                    nombre: option.textContent.split(' - ')[0],
+                    limiteClases: parseInt(option.dataset.clases),
+                    precio: parseFloat(option.dataset.precio)
+                };
+                document.getElementById('limite-clases-info').textContent =
+                    `Puede seleccionar hasta ${planSeleccionado.limiteClases} clases.`;
+            } else {
+                document.getElementById('valor-plan').value = '';
+                planSeleccionado = null;
+                document.getElementById('limite-clases-info').textContent = '';
+            }
+            clasesSeleccionadas = [];
+        });
+
+        // Buscar estudiante
+        document.getElementById('buscar-btn').addEventListener('click', async () => {
+            const documento = document.getElementById('identificacion').value.trim();
+            if (!documento) return alert('Ingrese un número de documento.');
+
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/api/estudiantes/perfil/${documento}`);
+                if (!res.ok) throw new Error('Estudiante no encontrado');
+                const estudiante = await res.json();
+                document.getElementById('nombre').value = estudiante.nombre;
+                document.getElementById('apellido').value = estudiante.apellido;
+                idEstudiante = estudiante.id_estudiante;
+                documentoEstudiante = estudiante.documento_identidad;
+            } catch (err) {
+                console.error(err);
+                alert('Estudiante no encontrado.');
+            }
+        });
+
+        // Abrir modal de selección de clases
+        document.getElementById('seleccionar-clases-btn').addEventListener('click', async () => {
+            if (!idEstudiante) return alert('Primero busque un estudiante.');
+            if (!planSeleccionado) return alert('Seleccione un plan de clase.');
+
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/clases/');
+                if (!res.ok) throw new Error(`Error ${res.status}`);
+                const clases = await res.json();
+                const tbody = document.getElementById('clases-table-body');
+                tbody.innerHTML = '';
+                clases.forEach(clase => {
+                    const row = document.createElement('tr');
+                    const planAsignado = clase.id_plan ? `Plan ID ${clase.id_plan}` : 'Sin asignar';
+                    row.innerHTML = `
+                        <td><input type="checkbox" class="clase-checkbox" data-id="${clase.id_clase}" ${clasesSeleccionadas.includes(clase.id_clase) ? 'checked' : ''}></td>
+                        <td>${clase.nombre}</td>
+                        <td>${new Date(clase.fecha_hora).toLocaleString()}</td>
+                        <td>${planAsignado}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.querySelectorAll('.clase-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const idClase = parseInt(checkbox.dataset.id);
+                        if (checkbox.checked) {
+                            if (clasesSeleccionadas.length >= planSeleccionado.limiteClases) {
+                                checkbox.checked = false;
+                                alert(`No puede seleccionar más de ${planSeleccionado.limiteClases} clases.`);
+                                return;
+                            }
+                            clasesSeleccionadas.push(idClase);
+                        } else {
+                            clasesSeleccionadas = clasesSeleccionadas.filter(id => id !== idClase);
+                        }
+                    });
+                });
+
+                document.getElementById('seleccionar-clases-modal').style.display = 'flex';
+            } catch (err) {
+                console.error(err);
+                alert('Error al cargar las clases.');
+            }
+        });
+
+        // Cerrar modal de clases
+        document.getElementById('cerrar-clases-btn').addEventListener('click', () => {
+            document.getElementById('seleccionar-clases-modal').style.display = 'none';
+        });
+
+        // Finalizar → abrir modal de pago
+        document.getElementById('finalizar-btn').addEventListener('click', () => {
+            if (!idEstudiante) return alert('Primero busque un estudiante.');
+            if (!planSeleccionado) return alert('Seleccione un plan de clase.');
+            if (clasesSeleccionadas.length === 0) return alert('Seleccione al menos una clase.');
+            document.getElementById('metodo-pago-modal').style.display = 'flex';
+        });
+
+        // Cerrar modal de pago
+        document.getElementById('cancelar-pago-btn').addEventListener('click', () => {
+            document.getElementById('metodo-pago-modal').style.display = 'none';
+        });
+
+        // Procesar pago y asignar
+        async function procesarPago(metodo) {
+            document.getElementById('metodo-pago-modal').style.display = 'none';
+
+            const fecha = new Date().toISOString().split('T')[0];
+
+            const pagoData = {
+                id_estudiante: idEstudiante,
+                tipo: "mensualidad",
+                monto: planSeleccionado.precio,
+                fecha: fecha,
+                metodo_pago: metodo,
+                id_plan: planSeleccionado.id
+            };
+
+            try {
+                // 1. Registrar el pago
+                const resPago = await fetch('http://127.0.0.1:8000/api/pagos/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pagoData)
+                });
+                if (!resPago.ok) {
+                    const errorText = await resPago.text();
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.detail || "Error en el pago");
+                    } catch (e) {
+                        throw new Error(`Error del servidor: ${errorText}`);
+                    }
+                }
+
+                // 2. Actualizar el plan del estudiante
+                const estudianteUpdate = { id_plan: planSeleccionado.id };
+                const resEstudiante = await fetch(`http://127.0.0.1:8000/api/estudiantes/${documentoEstudiante}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(estudianteUpdate)
+                });
+                if (!resEstudiante.ok) throw new Error('Error al asignar el plan al estudiante');
+
+                // 3. Asignar cada clase al estudiante y al plan
+                for (const idClase of clasesSeleccionadas) {
+                    const claseUpdate = {
+                        id_estudiante: idEstudiante,
+                        id_plan: planSeleccionado.id
+                    };
+                    const resClase = await fetch(`http://127.0.0.1:8000/api/clases/${idClase}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(claseUpdate)
+                    });
+                    if (!resClase.ok) throw new Error(`Error al asignar la clase ${idClase}`);
+                }
+
+                // 4. Mostrar éxito
+                document.getElementById('exito-modal').style.display = 'flex';
+            } catch (err) {
+                console.error(err);
+                alert(`Error al procesar la asignación: ${err.message}`);
+            }
+        }
+
+        // Eventos para los botones de pago
+        document.getElementById('nequi-trigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            procesarPago('nequi');
+        });
+
+        document.getElementById('efectivo-trigger').addEventListener('click', (e) => {
+            e.preventDefault();
+            procesarPago('efectivo');
+        });
+
+        // Cerrar modal de éxito
+        document.getElementById('cerrar-exito-btn').addEventListener('click', () => {
+            document.getElementById('exito-modal').style.display = 'none';
+            document.getElementById('assign-form').reset();
+            idEstudiante = null;
+            planSeleccionado = null;
+            clasesSeleccionadas = [];
+            cargarPlanes();
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarPlanes();
+        });
+    </script>
 </body>
 
 </html>
