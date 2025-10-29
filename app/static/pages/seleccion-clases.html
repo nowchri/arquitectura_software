@@ -59,79 +59,61 @@
         </main>
     </div>
 
+    <!-- ... resto del HTML igual hasta el modal de Crear Clase ... -->
+
     <!-- Popup (Modal) para Crear Clase -->
     <div class="modal" id="crear-clase-modal">
         <div class="modal__content">
             <h2>Crear clase</h2>
-            <form class="create-class-form">
-
-                <!-- Select para Plan de clases -->
-                <div class="detail-form__group">
-                    <label for="plan-clase">Plan de clases:</label>
-                    <!-- 
-                        COMENTARIO: Este menú desplegable debe contener los planes de clases disponibles en la base de datos.
-                        Cada opción debe tener un valor (por ejemplo, el ID del plan) y mostrar el nombre del plan.
-                        Por ejemplo, en JavaScript:
-                        const select = document.getElementById('plan-clase');
-                        planes.forEach(plan => {
-                            const option = document.createElement('option');
-                            option.value = plan.id;
-                            option.textContent = plan.nombre;
-                            select.appendChild(option);
-                        });
-                    -->
-                    <select id="plan-clase" name="plan-clase">
-                        <option value="" disabled selected>Seleccione un plan</option>
-                        <option value="1">Plan 1</option>
-                        <option value="2">Plan 2</option>
-                        <option value="3">Plan 3</option>
-                        <option value="4">Plan 4</option>
-                    </select>
-                </div>
+            <form class="create-class-form" id="crear-clase-form">
                 <div class="detail-form__group">
                     <label for="nombre-clase">Nombre de la Clase:</label>
                     <input type="text" id="nombre-clase" name="nombre-clase"
-                        placeholder="Pigmentación artística del cuerpo">
+                        placeholder="Pigmentación artística del cuerpo" required>
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label for="cantidad-clases">Cantidad de clases:</label>
-                        <!-- 
-                            COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
-                            Debe mostrar la cantidad de clases del plan seleccionado y ser de solo lectura.
-                            Por ejemplo, en JavaScript:
-                            document.getElementById('cantidad-clases').value = cantidadDeClasesDelPlanSeleccionado;
-                        -->
-                        <input type="number" id="cantidad-clases" name="cantidad-clases" placeholder="0" readonly>
+                        <label for="fecha-clase">Fecha:</label>
+                        <input type="date" id="fecha-clase" name="fecha-clase" required>
                     </div>
                     <div class="field">
-                        <label for="horario-clase">Horario de la clase:</label>
-                        <select id="horario-clase" name="horario-clase">
-                            <option value="" disabled selected>Seleccione un horario</option>
-                            <option value="8am-10am">8 am a 10 am</option>
-                            <option value="10am-12pm">10 am a 12 pm</option>
-                            <option value="2pm-4pm">2 pm a 4 pm</option>
-                            <option value="4pm-6pm">4 pm a 6 pm</option>
+                        <label for="hora-clase">Hora:</label>
+                        <select id="hora-clase" name="hora-clase" required>
+                            <option value="" disabled selected>Seleccione una hora</option>
+                            <!-- Horas de 8:00 a 18:30 -->
+                            <option value="08:00">8:00 AM</option>
+                            <option value="08:30">8:30 AM</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="09:30">9:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="11:30">11:30 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="12:30">12:30 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="13:30">1:30 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="14:30">2:30 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="15:30">3:30 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="16:30">4:30 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="17:30">5:30 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="18:30">6:30 PM</option>
                         </select>
                     </div>
                 </div>
-                <div class="detail-form__group">
-                    <label for="valor-plan">Valor plan de clases:</label>
-                    <!-- 
-                        COMENTARIO: Este campo debe actualizarse dinámicamente cuando se seleccione un plan.
-                        Debe mostrar el precio del plan seleccionado y ser de solo lectura.
-                        Por ejemplo, en JavaScript:
-                        document.getElementById('valor-plan').value = precioDelPlanSeleccionado;
-                    -->
-                    <input type="text" id="valor-plan" name="valor-plan" placeholder="$ 0.00" readonly>
-                </div>
                 <div class="detail-form__actions">
-                    <button type="button" class="btn-primary" id="create-class-btn">Crear Clase</button>
+                    <button type="submit" class="btn-primary" id="create-class-btn">Crear Clase</button>
                     <button type="button" class="btn-secondary" id="cancel-create-btn">Volver</button>
                 </div>
             </form>
         </div>
     </div>
+
     <!-- Popup (Modal) para Crear Plan de Clase -->
     <div class="modal" id="crear-plan-modal">
         <div class="modal__content">
@@ -211,6 +193,56 @@
         });
 
         // Función para cargar el menú
+        // Establecer fecha mínima (hoy)
+        document.getElementById('fecha-clase').min = new Date().toISOString().split('T')[0];
+
+        // Crear clase
+        document.getElementById('crear-clase-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre-clase').value.trim();
+            const fecha = document.getElementById('fecha-clase').value;
+            const hora = document.getElementById('hora-clase').value;
+
+            if (!nombre || !fecha || !hora) {
+                alert('Por favor complete todos los campos.');
+                return;
+            }
+
+            // Combinar fecha y hora en formato ISO: "2023-11-15T10:00:00"
+            const fechaHora = `${fecha}T${hora}:00`;
+
+            const claseData = {
+                nombre: nombre,
+                fecha_hora: fechaHora,
+                contador_clase: 1,  // ← Siempre 1
+                id_plan: null,      // ← Null
+                id_estudiante: null // ← Null
+            };
+
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/clases/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(claseData)
+                });
+                if (!res.ok) {
+                    const errorText = await res.text();
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.detail || "Error al crear la clase");
+                    } catch (e) {
+                        throw new Error(`Error del servidor: ${errorText}`);
+                    }
+                }
+                alert('¡Clase creada con éxito!');
+                document.getElementById('crear-clase-modal').style.display = 'none';
+                document.getElementById('crear-clase-form').reset();
+            } catch (err) {
+                console.error(err);
+                alert(`Error: ${err.message}`);
+            }
+        });
 
     </script>
     <script src="scripts/menu-loader.js"></script>

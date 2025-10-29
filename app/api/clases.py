@@ -17,17 +17,19 @@ def obtener_clases(db: Session = Depends(get_db)):
 # POST: Nueva clase
 @router.post("/")
 def crear_clase(clase_: ClaseCreate, db: Session = Depends(get_db)):
-    # Verificar que el estudiante exista
-    estudiante = db.query(Estudiante).filter(Estudiante.id_estudiante == clase_.id_estudiante).first()
-    if not estudiante:
-        raise HTTPException(status_code=404, detail="Estudiante no encontrado")
+    # Verificar que el estudiante exista (solo si se proporciona)
+    if clase_.id_estudiante is not None:
+        estudiante = db.query(Estudiante).filter(Estudiante.id_estudiante == clase_.id_estudiante).first()
+        if not estudiante:
+            raise HTTPException(status_code=404, detail="Estudiante no encontrado")
 
-    # Verificar que el plan exista
-    plan = db.query(PlanDeClases).filter(PlanDeClases.id_plan == clase_.id_plan).first()
-    if not plan:
-        raise HTTPException(status_code=404, detail="Plan de clases no encontrado")
+    # Verificar que el plan exista (solo si se proporciona)
+    if clase_.id_plan is not None:
+        plan = db.query(PlanDeClases).filter(PlanDeClases.id_plan == clase_.id_plan).first()
+        if not plan:
+            raise HTTPException(status_code=404, detail="Plan de clases no encontrado")
 
-    nueva_clase = Clase(**clase_.dict())
+    nueva_clase = Clase(**clase_.model_dump())
     db.add(nueva_clase)
     db.commit()
     db.refresh(nueva_clase)
