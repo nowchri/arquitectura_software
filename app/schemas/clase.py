@@ -1,17 +1,6 @@
 # app/schemas/clase.py
-"""
 from pydantic import BaseModel
-
-class ClaseSchema(BaseModel):
-    id_clase: int
-    nombre: str
-    fecha_hora: str
-    contador_clase: int
-    id_plan: int
-    id_estudiante: int
-"""
-# app/schemas/clase.py
-from pydantic import BaseModel
+from datetime import datetime
 
 class ClaseCreate(BaseModel):
     nombre: str
@@ -19,3 +8,10 @@ class ClaseCreate(BaseModel):
     contador_clase: int
     id_plan: int
     id_estudiante: int
+
+class ClaseUpdate(BaseModel):
+    nombre: str = None
+    fecha_hora: str = None
+    contador_clase: int = None
+    id_plan: int = None
+    id_estudiante: int = None

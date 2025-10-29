@@ -10,6 +10,7 @@ from app.models import Estudiante, Clase, Pago, Asistencia, RedencionDeClaseNoAs
 from app.api import estudiantes, clases, pagos, asistencias, redenciones, reportes, login
 from app.api import bastidores
 from app.api import estudiante_bastidor
+from app.api import planes_de_clase  # ← Añade esta línea
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
 
@@ -32,3 +33,4 @@ app.include_router(redenciones.router, prefix="/api")
 app.include_router(reportes.router, prefix="/api")
 app.include_router(bastidores.router, prefix="/api")  # ← Añade esta línea
 app.include_router(estudiante_bastidor.router, prefix="/api")  # ← Añade esta línea
+app.include_router(planes_de_clase.router, prefix="/api")  # ← Añade esta línea
